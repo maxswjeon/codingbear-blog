@@ -1,0 +1,43 @@
+{
+  "name": "codingbear-blog",
+  "version": "1.0.0",
+  "description": "Codingbear's Blog",
+  "scripts": {
+    "build": "gatsby build",
+    "build:clean": "gatsby clean && gatsby build",
+    "develop": "gatsby develop",
+    "develop:clean": "gatsby clean && gatsby develop"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxswjeon/codingbear-blog.git"
+  },
+  "keywords": [
+    "blog",
+    "gatsby",
+    "react",
+    "markdown"
+  ],
+  "author": "Jeon Sangwan <maxswjeon@naver.com>",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/maxswjeon/codingbear-blog/issues"
+  },
+  "homepage": "https://github.com/maxswjeon/codingbear-blog#readme",
+  "dependencies": {
+    "gatsby": "^2.20.18",
+    "gatsby-source-filesystem": "^2.2.2",
+    "gatsby-transformer-remark": "^2.7.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "styled-components": "^5.1.0",
+    "typescript": "^3.8.3"
+  },
+  "devDependencies": {
+    "@types/node": "^13.11.1",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.6",
+    "@types/styled-components": "^5.1.0",
+    "gatsby-plugin-ts-config": "^0.2.2"
+  }
+}
