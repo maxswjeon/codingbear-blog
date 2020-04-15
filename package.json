@@ -2,21 +2,17 @@
   "name": "codingbear-blog",
   "version": "1.0.0",
   "description": "Codingbear's Blog",
+  "main": "src/index.js",
   "scripts": {
-    "build": "gatsby build",
-    "build:clean": "gatsby clean && gatsby build",
-    "develop": "gatsby develop",
-    "develop:clean": "gatsby clean && gatsby develop"
+    "reset": "gatsby clean && gatsby develop",
+    "build": "gatsby build"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/maxswjeon/codingbear-blog.git"
+    "url": "https://github.com/maxswjeon/codingbear-blog.git"
   },
   "keywords": [
-    "blog",
-    "gatsby",
-    "react",
-    "markdown"
+    "blog"
   ],
   "author": "Jeon Sangwan <maxswjeon@naver.com>",
   "license": "AGPL-3.0",
@@ -25,19 +21,57 @@
   },
   "homepage": "https://github.com/maxswjeon/codingbear-blog#readme",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.28",
+    "@fortawesome/free-brands-svg-icons": "^5.13.0",
+    "@fortawesome/free-regular-svg-icons": "^5.13.0",
+    "@fortawesome/free-solid-svg-icons": "^5.13.0",
+    "@fortawesome/react-fontawesome": "^0.1.9",
+    "babel-plugin-styled-components": "^1.10.7",
     "gatsby": "^2.20.18",
+    "gatsby-plugin-prefetch-google-fonts": "^1.4.3",
+    "gatsby-plugin-styled-components": "^3.2.1",
+    "gatsby-plugin-typescript": "^2.3.1",
+    "gatsby-remark-abbr": "^2.0.0",
+    "gatsby-remark-attr": "0.0.3",
+    "gatsby-remark-autolink-headers": "^2.2.1",
+    "gatsby-remark-copy-linked-files": "^2.2.1",
+    "gatsby-remark-embed-video": "^2.0.1",
+    "gatsby-remark-external-links": "0.0.4",
+    "gatsby-remark-graph": "^0.2.2",
+    "gatsby-remark-mathjax": "^1.0.0",
+    "gatsby-remark-normalize-paths": "^1.0.0",
+    "gatsby-remark-prismjs": "^3.4.1",
+    "gatsby-remark-relative-images": "^0.3.0",
+    "gatsby-remark-sub-sup": "^1.0.0",
+    "gatsby-remark-table-of-contents": "0.0.9",
+    "gatsby-remark-twemoji-shortcut": "^0.10.1",
     "gatsby-source-filesystem": "^2.2.2",
     "gatsby-transformer-remark": "^2.7.1",
+    "gray-matter": "^4.0.2",
+    "js-yaml": "^3.13.1",
+    "normalize.css": "^8.0.1",
+    "prismjs": "^1.20.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-helmet": "^5.2.1",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.4.0",
+    "rehype-katex": "^3.0.0",
     "styled-components": "^5.1.0",
-    "typescript": "^3.8.3"
+    "twemoji": "^12.1.5",
+    "typescript": "^3.7.5"
   },
   "devDependencies": {
-    "@types/node": "^13.11.1",
+    "@hot-loader/react-dom": "^16.13.0",
+    "@types/js-yaml": "^3.12.3",
+    "@types/node": "^12.12.35",
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
-    "@types/styled-components": "^5.1.0",
-    "gatsby-plugin-ts-config": "^0.2.2"
+    "@types/react-helmet": "^5.0.15",
+    "@types/react-router-dom": "^5.1.4",
+    "@types/styled-components": "^5.0.1",
+    "cross-env": "^7.0.2",
+    "gatsby-plugin-ts-config": "^0.2.2",
+    "react-hot-loader": "^4.12.20"
   }
 }

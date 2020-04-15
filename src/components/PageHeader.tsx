@@ -1,0 +1,61 @@
+import React from 'react';
+import styled from 'styled-components';
+import Navigation from "./PageNavigation";
+
+function PageHeader(): React.ReactElement {
+    return (
+        <Background>
+            <Container>
+                <Title href={"/"}>코딩하는 곰의 공부일지</Title>
+            </Container>
+            <Navigation/>
+        </Background>
+    );
+}
+
+const Background = styled.div`
+  width: 100%;
+  background-color: #1B1F24;
+  overflow: auto;
+  padding-bottom: 50px;
+  
+  @media print {
+    background-color: white;
+  }
+`;
+
+const Container = styled.div`
+  width: 100%;
+  max-width: 968px;
+  margin: auto;
+  overflow: auto;
+`;
+
+const Title = styled.a`
+  padding: 75px 0 25px 0;
+  display: block;
+  float: left;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+  font-size: 2em;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  
+  @media only screen and (max-width: 968px) {
+    padding-left: 25px;
+  };
+  
+  @media only screen and (max-width: 640px) {
+    width: 100%;
+    padding: 0;
+    margin: 75px 0 25px 0;
+  };
+  
+  @media print {
+    padding: 25px 0;
+    color: #1B1F24;
+  }
+`;
+
+export default PageHeader;

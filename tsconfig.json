@@ -1,0 +1,76 @@
+{
+  "compilerOptions": {
+    // Compile result javascript version
+    // Target ES5 supports IE 10+
+    "target": "es5",
+    // Typescript Grammar support
+    // Module ESNext supports all recent grammar
+    "module": "esnext",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    // build path
+    //"baseUrl": "./src",
+    //"paths": {
+    //
+    //},
+
+    // Declaration
+    "declaration": true,
+    // "declarationDir": "",
+
+    // Logs
+    "diagnostics": false,
+    "traceResolution": false,
+    "listEmittedFiles": false,
+    "listFiles": true,
+    "locale": "ko",
+    "pretty": true,
+    // React Support
+    "jsx": "react",
+    "jsxFactory": "React.createElement",
+    // Raw JS File Options
+    //"allowJs": false,
+    //"checkJs": true,
+
+    // Lint
+    "strict": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "suppressExcessPropertyErrors": false,
+    "suppressImplicitAnyIndexErrors": false,
+    "noStrictGenericChecks": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    // Output Options
+    "charset": "utf-8",
+    "emitBOM": false,
+    "newLine": "lf",
+    "removeComments": true,
+    "disableSizeLimit": false,
+    "noEmit": false,
+    "noEmitOnError": false,
+    "preserveConstEnums": false,
+    "forceConsistentCasingInFileNames": true,
+    // Libraries
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "skipLibCheck": true,
+    // Optimization
+    "importHelpers": true,
+    // Source Map
+    "inlineSourceMap": false,
+    "sourceMap": false,
+    // Etc
+    "resolveJsonModule": true,
+    "isolatedModules": true
+  },
+  "include": [
+    "src"
+  ]
+}
