@@ -23,7 +23,7 @@ import {graphql} from "gatsby";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderOpen} from "@fortawesome/free-solid-svg-icons";
 
-import {Container, GlobalStyles, Info, PageContent} from '../styles/PageStyles';
+import {Container, GlobalStyles, Info, InfoTitle, PageContent} from '../styles/PageStyles';
 import PageHeader from "../components/PageHeader";
 import MarkdownNode from "../types/MarkdownNode";
 import CategoryNode from "../types/CategoryNode";
