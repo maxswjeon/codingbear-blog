@@ -1,40 +1,28 @@
 import React from "react";
 import styled from "styled-components";
 import ProjectItem from "./ProjectItem";
-
-interface ProjectInfo {
-    title: string
-    description: string
-    language: string[]
-    libraries: string[]
-    fields: {
-        type: string
-        lastUpdate: string
-        open: string
-        slug: string
-    }
-}
+import ProjectNode from "../types/ProjectNode";
 
 interface ProjectListProps {
-    data: ProjectInfo[]
+    data: ProjectNode[]
 }
 
-function ProjectList(props: ProjectListProps) {
+function ProjectList(props: ProjectListProps): React.ReactElement<ProjectListProps> {
     const data = props.data;
 
     return (
         <List>
             {data.map(project => {
                 const {title, description} = project;
-                const slug = project.fields.slug;
-                const open = project.fields.open === 'true';
+                const slug = project.fields!.slug!;
+                const open = project.fields!.open!;
 
                 return (
                     <ProjectItem
                         href={slug}
                         key={slug}
-                        title={title}
-                        description={description}
+                        title={title!}
+                        description={description!}
                         open={open}/>
                 );
             })}

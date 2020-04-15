@@ -1,13 +1,13 @@
 /*
- * lists/ProjectTemplate.tsx
+ * lists/TagTemplate.tsx
  *
- * url : /{category}/projects
+ * url : /{category}/tags
  * contents:
- *     - List of Projects in the category
+ *     - List of Tags in the category
  * context:
  *     - Category Title
  * query:
- *     - All projects with category === category
+ *     - All tags with type === category
  */
 
 import React from "react";
@@ -54,19 +54,13 @@ export default function ({data}: QueryData) {
 }
 
 export const pageQuery = graphql`
-    query ($tag: String!) {
-        allMarkdownRemark(filter: {frontmatter: {tags: {in: [$tag]}}}) {
-            nodes {
-                fields {
-                    project
-                    slug
-                }
-                frontmatter {
-                    title
-                    date
-                    tags
-                }
-            }
+    query GetAllTagsInCategory($category: String!) {
+      allTag(filter: {category: {eq: $category}}) {
+        nodes {
+          title
+          category
+          description
         }
+      }
     }
 `;

@@ -212,8 +212,8 @@ const createPages: GatsbyNode["createPages"] = async function (args) {
                     path: '/' + rootCategory + '/tags/' + tag,
                     component: path.resolve(path.join(templatePath, 'entries/TagTemplate.tsx')),
                     context: {
-                        tag,
-                        rootCategory
+                        tag: tag,
+                        category: rootCategory
                     }
                 });
 

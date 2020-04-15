@@ -6,6 +6,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderOpen} from "@fortawesome/free-solid-svg-icons";
 import {config, dom} from "@fortawesome/fontawesome-svg-core";
 import styled, {createGlobalStyle} from "styled-components";
+import PageFooter from "../components/PageFooter";
 
 interface PostData {
     fields: {
@@ -37,7 +38,7 @@ function MainPage({data}: QueryData) {
             </Helmet>
             <GlobalStyles/>
             <PageHeader/>
-            <Background>
+            <PageContent>
                 <Container>
                     <Info>
                         <FontAwesomeIcon icon={faFolderOpen} color="#444"/>
@@ -58,7 +59,8 @@ function MainPage({data}: QueryData) {
                         })
                     }
                 </Container>
-            </Background>
+            </PageContent>
+            <PageFooter/>
         </div>
     );
 }
@@ -68,11 +70,13 @@ const GlobalStyles = createGlobalStyle`
     ${dom.css()}
 `;
 
-const Background = styled.div`
+const PageContent = styled.div`
   width: 100%;
   overflow: auto;
   padding-bottom: 50px;
   margin-top: -50px;
+  position:relative;
+  flex: 1;
 `;
 
 const Container = styled.div`

@@ -50,13 +50,13 @@ const CreateProjectFields: GatsbyNode['onCreateNode'] = async function (args) {
     createNodeField({
         node,
         name: 'lastUpdate',
-        value: `${lastUpdate.getTime()}`,
+        value: lastUpdate.getTime(),
     });
 
     createNodeField({
         node,
         name: 'open',
-        value: `${(now.getTime() - lastUpdate.getTime()) < 7 * 24 * 60 * 60 * 1000}`
+        value: (now.getTime() - lastUpdate.getTime()) < 7 * 24 * 60 * 60 * 1000
     });
 
     createNodeField({

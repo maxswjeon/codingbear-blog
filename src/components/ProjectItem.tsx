@@ -12,7 +12,7 @@ interface ProjectItemProps {
     key: string
 }
 
-function ProjectItem(props: ProjectItemProps) {
+function ProjectItem(props: ProjectItemProps): React.ReactElement {
     const {title, description, open, href} = props;
 
     return (

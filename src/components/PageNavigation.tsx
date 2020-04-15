@@ -8,7 +8,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBars} from "@fortawesome/free-solid-svg-icons";
 
 interface PageNavigationProps {
-    location: WindowLocation;
+    location?: WindowLocation;
 }
 
 interface PageNavigationState {
@@ -64,8 +64,12 @@ export class PageNavigation extends React.Component<PageNavigationProps, PageNav
         return this.state.collapsed != nextState.collapsed;
     }
 
-    render(): React.ReactElement {
+    render(): React.ReactElement | null {
         const {location} = this.props;
+
+        if (!location) {
+            return null;
+        }
 
         return (
             <Container>

@@ -1,6 +1,14 @@
 html, body, #___gatsby, #gatsby-focus-wrapper {
     min-height: 100%;
     background-color: #EAEAEA;
+    width: 100vw;
+    overflow-x: hidden;
+}
+
+#gatsby-focus-wrapper > div {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
 }
 
 * {

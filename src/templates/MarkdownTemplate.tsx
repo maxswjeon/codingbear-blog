@@ -1,34 +1,39 @@
+/*
+ * MarkdownTemplate.tsx
+ *
+ * url : /{slug}
+ * contents:
+ *     - Styled Result of Markdown File
+ * context:
+ *     - Slug to Markdown File
+ * query:
+ *     - Markdown Node with matching slug
+ */
+
 import React from "react";
-import styled, {createGlobalStyle} from "styled-components";
+import {Helmet} from "react-helmet";
 import 'normalize.css';
 
+import styled from "styled-components";
+
 import {graphql} from "gatsby";
-import {config, dom} from "@fortawesome/fontawesome-svg-core";
+
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderOpen} from "@fortawesome/free-solid-svg-icons";
 
+import {Container, GlobalStyles, Info, PageContent} from '../styles/PageStyles';
 import PageHeader from "../components/PageHeader";
-import {Helmet} from "react-helmet";
+import MarkdownNode from "../types/MarkdownNode";
 
 interface QueryData {
     data: {
-        markdownRemark: {
-            frontmatter: {
-                title: string,
-                date: string,
-            },
-            html: string,
-            fields: {
-                slug: string,
-                category: string,
-            }
-        }
+        markdownRemark: MarkdownNode
     }
 }
 
 export default function MarkdownTemplate({data}: QueryData) {
-    const {category} = data.markdownRemark.fields;
-    const {title, date} = data.markdownRemark.frontmatter;
+    const {category} = data.markdownRemark.fields!;
+    const {title, date} = data.markdownRemark.frontmatter!;
 
     return (
         <div>
@@ -37,7 +42,7 @@ export default function MarkdownTemplate({data}: QueryData) {
             </Helmet>
             <GlobalStyles/>
             <PageHeader/>
-            <Background>
+            <PageContent>
                 <Container>
                     <Info>
                         <FontAwesomeIcon icon={faFolderOpen} color="#444"/>
@@ -47,42 +52,12 @@ export default function MarkdownTemplate({data}: QueryData) {
                     </Info>
                     <Title>{title}</Title>
                     <UploadDate>{date}</UploadDate>
-                    <Content className="markdown-body" dangerouslySetInnerHTML={{__html: data.markdownRemark.html}}/>
+                    <Content className="markdown-body" dangerouslySetInnerHTML={{__html: data.markdownRemark!.html!}}/>
                 </Container>
-            </Background>
+            </PageContent>
         </div>
     );
 }
-
-config.autoAddCss = false;
-const GlobalStyles = createGlobalStyle`
-    ${dom.css()}
-`;
-
-const Background = styled.div`
-  width: 100%;
-  overflow: auto;
-  padding-bottom: 50px;
-  margin-top: -50px;
-`;
-
-const Container = styled.div`
-  width: 100%;
-  max-width: 968px;
-  margin: auto;
-  padding: 32px;
-  box-sizing: border-box;
-  overflow: auto;
-  background-color: #FFFFFF;
-`;
-
-const Info = styled.div`
-  height: 50px;
-  margin: -32px -32px 0 -32px;
-  padding: 0 32px;
-  box-sizing: border-box;
-  border-bottom: 1px solid #EAEAEA;
-`;
 
 const CategoryText = styled.a`
   text-decoration: none;
