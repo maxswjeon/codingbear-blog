@@ -11,21 +11,15 @@
  */
 
 import React from "react";
-import {Helmet} from "react-helmet";
 import 'normalize.css';
 
 import styled from "styled-components";
 
 import {graphql} from "gatsby";
 
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faFolderOpen} from "@fortawesome/free-solid-svg-icons";
-
 import {BlogConfig} from "../config";
-
-import {Container, GlobalStyles, Info, PageContent} from '../styles/PageStyles';
-import PageHeader from "../components/PageHeader";
 import MarkdownNode from "../types/MarkdownNode";
+import PageTemplate from "./PageTemplate";
 
 interface QueryData {
     data: {
@@ -33,43 +27,28 @@ interface QueryData {
     }
 }
 
-export default function MarkdownTemplate({data}: QueryData) {
-    const {category} = data.markdownRemark.fields!;
+function MarkdownTemplate({data}: QueryData) {
     const {title, date} = data.markdownRemark.frontmatter!;
 
     return (
-        <div>
-            <Helmet>
-                <title>{title} - {BlogConfig.name}</title>
-            </Helmet>
-            <GlobalStyles/>
-            <PageHeader/>
-            <PageContent>
-                <Container>
-                    <Info>
-                        <FontAwesomeIcon icon={faFolderOpen} color="#444"/>
-                        <CategoryText href={category}>
-                            {category}
-                        </CategoryText>
-                    </Info>
-                    <Title>{title}</Title>
-                    <UploadDate>{date}</UploadDate>
-                    <Content className="markdown-body" dangerouslySetInnerHTML={{__html: data.markdownRemark!.html!}}/>
-                </Container>
-            </PageContent>
+        <div>=
+            <Title>{title}</Title>
+            <UploadDate>{date}</UploadDate>
+            <Content className="markdown-body" dangerouslySetInnerHTML={{__html: data.markdownRemark!.html!}}/>
         </div>
     );
 }
 
-const CategoryText = styled.a`
-  text-decoration: none;
-  line-height: 50px;
-  height: 50px;
-  display: inline-block;
-  color: #959da5;
-  margin: 0 10px;
-`;
-
+/*
+ * const CategoryText = styled.a`
+ *   text-decoration: none;
+ *   line-height: 50px;
+ *   height: 50px;
+ *   display: inline-block;
+ *   color: #959da5;
+ *   margin: 0 10px;
+ * `;
+ */
 const Title = styled.h1`
   margin: 32px 0 10px 0;
   line-height: 50px;
@@ -104,3 +83,17 @@ export const pageQuery = graphql`
         }
     }
 `;
+
+export default function (props: QueryData) {
+    const {data} = props;
+    const {category} = data.markdownRemark.fields!;
+    const {title} = data.markdownRemark.frontmatter!;
+
+    return (
+        <PageTemplate
+            title={title! + '-' + BlogConfig.name}
+            category={category!}
+            content={<MarkdownTemplate data={data}/>}
+        />
+    )
+}

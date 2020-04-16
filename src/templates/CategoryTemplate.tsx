@@ -15,20 +15,14 @@
  */
 
 import React from "react";
-import {Helmet} from "react-helmet";
 import 'normalize.css';
 
 import {graphql} from "gatsby";
 
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faFolderOpen} from "@fortawesome/free-solid-svg-icons";
-
 import {BlogConfig} from "../config";
-
-import {Container, GlobalStyles, Info, InfoTitle, PageContent} from '../styles/PageStyles';
-import PageHeader from "../components/PageHeader";
 import MarkdownNode from "../types/MarkdownNode";
 import CategoryNode from "../types/CategoryNode";
+import PageTemplate from "./PageTemplate";
 
 interface QueryData {
     data: {
@@ -39,43 +33,30 @@ interface QueryData {
     }
 }
 
-export default function ({data}: QueryData) {
+function CategoryTemplate({data}: QueryData) {
     const markdown = data.allMarkdownRemark.nodes;
-    const {title, description, category} = data.category;
+    const {title, description} = data.category;
 
     return (
         <div>
-            <Helmet>
-                <title>{title} - {BlogConfig.name}</title>
-            </Helmet>
-            <GlobalStyles/>
-            <PageHeader/>
-            <PageContent>
-                <Container>
-                    <Info>
-                        <FontAwesomeIcon icon={faFolderOpen} color="#444"/>
-                        <InfoTitle>{'/' + category}</InfoTitle>
-                    </Info>
-                    <h1>{title}</h1>
-                    <p>{description}</p>
+            <h1>{title}</h1>
+            <p>{description}</p>
 
-                    <h1>Recent Posts</h1>
-                    {
-                        markdown.map((post) => {
-                            const {title, date} = post.frontmatter!;
-                            const {slug} = post.fields!;
+            <h1>Recent Posts</h1>
+            {
+                markdown.map((post) => {
+                    const {title, date} = post.frontmatter!;
+                    const {slug} = post.fields!;
 
-                            return (
-                                <div key={slug}>
-                                    <h2>{title}</h2>
-                                    <h3>{date}</h3>
-                                    <p>{slug}</p>
-                                </div>
-                            );
-                        })
-                    }
-                </Container>
-            </PageContent>
+                    return (
+                        <div key={slug}>
+                            <h2>{title}</h2>
+                            <h3>{date}</h3>
+                            <p>{slug}</p>
+                        </div>
+                    );
+                })
+            }
         </div>
     )
 }
@@ -102,3 +83,16 @@ export const pageQuery = graphql`
         }
     }
 `;
+
+export default function (props: QueryData) {
+    const {data} = props;
+    const {title, category} = data.category;
+
+    return (
+        <PageTemplate
+            title={title! + '-' + BlogConfig.name}
+            category={'/' + category!}
+            content={<CategoryTemplate data={data}/>}
+        />
+    )
+}

@@ -7,19 +7,13 @@
  */
 
 import React from "react";
-import {Helmet} from "react-helmet";
 import 'normalize.css';
 
 import {graphql} from "gatsby";
 
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faFolderOpen} from "@fortawesome/free-solid-svg-icons";
-
 import {BlogConfig} from "../../config";
-
-import {Container, GlobalStyles, Info, InfoTitle, PageContent} from '../../styles/PageStyles';
-import PageHeader from "../../components/PageHeader";
 import MarkdownNode from "../../types/MarkdownNode";
+import PageTemplate from "../PageTemplate";
 
 interface QueryData {
     data: {
@@ -29,30 +23,16 @@ interface QueryData {
     }
 }
 
-export default function ({data}: QueryData) {
-    const {project} = data.allMarkdownRemark.nodes[0].fields!;
-
+function ProjectTemplate({data}: QueryData) {
     return (
         <div>
-            <Helmet>
-                <title>{project} - {BlogConfig.name}</title>
-            </Helmet>
-            <GlobalStyles/>
-            <PageHeader/>
-            <PageContent>
-                <Container>
-                    <Info>
-                        <FontAwesomeIcon icon={faFolderOpen} color="#444"/>
-                        <InfoTitle>{project}</InfoTitle>
-                    </Info>
-                </Container>
-            </PageContent>
+
         </div>
     )
 }
 
 export const pageQuery = graphql`
-    query ($project: String!) {
+    query GetAllPostsInProject($project: String!) {
         allMarkdownRemark(filter: {fields: {project: {eq: $project}}}) {
             nodes {
                 fields {
@@ -67,3 +47,16 @@ export const pageQuery = graphql`
         }
     }
 `;
+
+export default function (props: QueryData) {
+    const {data} = props;
+    const {project} = data.allMarkdownRemark.nodes[0].fields!;
+
+    return (
+        <PageTemplate
+            title={project! + '-' + BlogConfig.name}
+            category={project!}
+            content={<ProjectTemplate data={data}/>}
+        />
+    )
+}

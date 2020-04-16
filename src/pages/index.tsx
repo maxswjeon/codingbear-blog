@@ -1,18 +1,12 @@
 import React from "react";
-import {Helmet} from "react-helmet";
 import 'normalize.css';
 
 import {graphql, StaticQuery} from "gatsby";
-
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderOpen} from "@fortawesome/free-solid-svg-icons";
 
 import {BlogConfig} from "../config";
-
-import {Container, GlobalStyles, Info, InfoTitle, PageContent} from '../styles/PageStyles';
-import PageHeader from "../components/PageHeader";
-import PageFooter from "../components/PageFooter";
 import MarkdownNode from "../types/MarkdownNode";
+import PageTemplate from "../templates/PageTemplate";
 
 interface QueryData {
     data: {
@@ -27,40 +21,26 @@ function MainPage({data}: QueryData) {
 
     return (
         <div>
-            <Helmet>
-                <title>{BlogConfig.name}</title>
-            </Helmet>
-            <GlobalStyles/>
-            <PageHeader/>
-            <PageContent>
-                <Container>
-                    <Info>
-                        <FontAwesomeIcon icon={faFolderOpen} color="#444"/>
-                        <InfoTitle>/</InfoTitle>
-                    </Info>
-                    {
-                        markdown.map((post) => {
-                            const {title, date} = post.frontmatter!;
-                            const {slug} = post.fields!;
+            {
+                markdown.map((post) => {
+                    const {title, date} = post.frontmatter!;
+                    const {slug} = post.fields!;
 
-                            return (
-                                <div>
-                                    <h1>{title}</h1>
-                                    <h2>{date}</h2>
-                                    <p>{slug}</p>
-                                </div>
-                            );
-                        })
-                    }
-                </Container>
-            </PageContent>
-            <PageFooter/>
+                    return (
+                        <div>
+                            <h1>{title}</h1>
+                            <h2>{date}</h2>
+                            <p>{slug}</p>
+                        </div>
+                    );
+                })
+            }
         </div>
     );
 }
 
 export default function () {
-    return (<StaticQuery render={data => <MainPage data={data}/>} query={graphql`
+    return (<StaticQuery render={data => <MainPageTemplate data={data}/>} query={graphql`
     query GetAllPosts {
         allMarkdownRemark {
             nodes {
@@ -77,3 +57,16 @@ export default function () {
     }
     `}/>);
 };
+
+function MainPageTemplate(props: QueryData) {
+    const {data} = props;
+
+    return (
+        <PageTemplate
+            title={BlogConfig.name}
+            category='/'
+            icon={faFolderOpen}
+            content={<MainPage data={data}/>}
+        />
+    )
+}

@@ -11,20 +11,14 @@
  */
 
 import React from "react";
-import {Helmet} from "react-helmet";
 import 'normalize.css';
 
 import {graphql} from "gatsby";
 
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faFolderOpen} from "@fortawesome/free-solid-svg-icons";
-
 import {BlogConfig} from "../../config";
-
-import {Container, GlobalStyles, Info, InfoTitle, PageContent} from '../../styles/PageStyles';
-import PageHeader from "../../components/PageHeader";
 import ProjectList from "../../components/ProjectList";
 import ProjectNode from "../../types/ProjectNode";
+import PageTemplate from "../PageTemplate";
 
 interface QueryData {
     data: {
@@ -38,28 +32,13 @@ interface QueryData {
     }
 }
 
-export default function ({data}: QueryData) {
-    const {category} = data.category;
+function ProjectTemplate({data}: QueryData) {
     const projects = data.allProject.nodes;
 
     return (
         <div>
-            <Helmet>
-                <title>{category} - {BlogConfig.name}</title>
-            </Helmet>
-            <GlobalStyles/>
-            <PageHeader/>
-            <PageContent>
-                <Container>
-                    <Info>
-                        <FontAwesomeIcon icon={faFolderOpen} color="#444"/>
-                        <InfoTitle>{'/' + category + '/projects'}</InfoTitle>
-                    </Info>
-
-                    <h1>Projects</h1>
-                    <ProjectList data={projects}/>
-                </Container>
-            </PageContent>
+            <h1>Projects</h1>
+            <ProjectList data={projects}/>
         </div>
     )
 }
@@ -86,3 +65,17 @@ export const pageQuery = graphql`
         }
     }
 `;
+
+export default function (props: QueryData) {
+    const {data} = props;
+    const {category} = data.category;
+
+    return (
+        <PageTemplate
+            title={category + '-' + BlogConfig.name}
+            category={'/' + category + '/projects'}
+            content={<ProjectTemplate data={data}/>}
+        />
+    )
+}
+
