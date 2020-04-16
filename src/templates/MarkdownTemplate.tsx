@@ -85,7 +85,7 @@ class MarkdownTemplate extends React.Component<QueryData, MarkdownTemplateState>
 
         const {html, tableOfContents} = data.markdownRemark;
         const {title, date} = data.markdownRemark.frontmatter!;
-        const {category} = data.markdownRemark.fields!;
+        const {directory} = data.markdownRemark.fields!;
 
         const toc = tableOfContents!
             .replace(/\/#/g, '#')
@@ -98,24 +98,34 @@ class MarkdownTemplate extends React.Component<QueryData, MarkdownTemplateState>
                 </Helmet>
                 <GlobalStyles/>
                 <PageHeader/>
-                <StickyTableOfContents id="sidebar-toc">
-                    <TocHeading id="toc-heading">Table of Contents</TocHeading>
-                    <div dangerouslySetInnerHTML={{__html: toc}}/>
-                </StickyTableOfContents>
+                {
+                    tableOfContents ?
+                        <StickyTableOfContents id="sidebar-toc">
+                            <TocHeading id="toc-heading">Table of Contents</TocHeading>
+                            <div dangerouslySetInnerHTML={{__html: toc}}/>
+                        </StickyTableOfContents>
+                        :
+                        null
+                }
                 <PageContent id="content">
                     <Container>
                         <Info>
                             <FontAwesomeIcon icon={faFolderOpen} color='#444'/>
-                            <CategoryText>{category}</CategoryText>
+                            <CategoryText>{directory}</CategoryText>
                         </Info>
 
                         <MarkdownStyle/>
                         <Title>{title}</Title>
                         <UploadDate>{date}</UploadDate>
-                        <TableOfContents>
-                            <TocHeading id="toc-heading">Table of Contents</TocHeading>
-                            <div dangerouslySetInnerHTML={{__html: toc}}/>
-                        </TableOfContents>
+                        {
+                            tableOfContents ?
+                                <TableOfContents>
+                                    <TocHeading id="toc-heading">Table of Contents</TocHeading>
+                                    <div dangerouslySetInnerHTML={{__html: toc}}/>
+                                </TableOfContents>
+                                :
+                                null
+                        }
                         <Content className="markdown-body"
                                  dangerouslySetInnerHTML={{__html: html!}}/>
                     </Container>
@@ -159,7 +169,7 @@ const UploadDate = styled.h2`
 const TableOfContents = styled.div`
   display: none;
   
-  @media screen and (max-width: ${StyleConfig.content.width + 450}px) {
+  @media screen and (max-width: ${StyleConfig.content.width + 525}px) {
     display: block;
   }
 `;
@@ -170,6 +180,10 @@ const StickyTableOfContents = styled.div`
   top: ${headerTop + 25}px;
   left: calc((100vw - ${StyleConfig.content.width}px)/ 2 - 250px);
   overflow-x: hidden;
+  
+  @media screen and (max-width: ${StyleConfig.content.width + 525}px) {
+    display: none;
+  }
 `;
 
 const TocHeading = styled.h2`
@@ -213,6 +227,7 @@ export const pageQuery = graphql`
             fields {
                 slug
                 category
+                directory
             }
             headings {
                 depth
