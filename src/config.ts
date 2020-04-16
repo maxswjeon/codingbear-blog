@@ -6,7 +6,9 @@ const BlogConfig: BlogConfigType = {
 
 const StyleConfig: StyleConfigType = {
     header: {
-        breakpoint: 640,
+        padding_top: 75,
+        padding_bottom: 25,
+        breakpoint: 575.98,
         background: '#1B1F24',
         text_color: 'white',
     },
@@ -29,7 +31,7 @@ const StyleConfig: StyleConfigType = {
     },
 
     content: {
-        width: 968,
+        width: 1024,
         padding: 32,
         background: 'white',
         shadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'

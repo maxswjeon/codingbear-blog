@@ -39,6 +39,8 @@ const CreateMarkdownField: GatsbyNode['onCreateNode'] = async function (args) {
         pathSlice.splice(1, 0, 'projects');
     }
 
+    pathSlice.pop()
+    pathSlice.push(fileNode.name);
     createNodeField({
         node,
         name: 'slug',

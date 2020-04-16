@@ -45,18 +45,18 @@ export default function PageTemplate(props: PageTemplateProps) {
     );
 }
 
-const GlobalStyles = createGlobalStyle`
+export const GlobalStyles = createGlobalStyle`
     ${dom.css()}
 `;
 
-const PageContent = styled.div`
+export const PageContent = styled.div`
   width: 100%;
   overflow: auto;
   padding-bottom: 50px;
   margin-top: -${StyleConfig.category.height}px;
 `;
 
-const Container = styled.div`
+export const Container = styled.div`
   width: 100%;
   max-width: ${StyleConfig.content.width}px;
   margin: auto;
@@ -69,7 +69,7 @@ const Container = styled.div`
   box-shadow: ${StyleConfig.content.shadow};
 `;
 
-const Info = styled.div`
+export const Info = styled.div`
   height: ${StyleConfig.category.height}px;
   margin: -${StyleConfig.content.padding}px -${StyleConfig.content.padding}px 0 -${StyleConfig.content.padding}px;
   padding: 0 ${StyleConfig.content.padding}px;
@@ -77,7 +77,7 @@ const Info = styled.div`
   border-bottom: 1px solid ${StyleConfig.category.border_color};
 `;
 
-const InfoTitle = styled.span`
+export const InfoTitle = styled.span`
   line-height:  ${StyleConfig.category.height}px;
   height: ${StyleConfig.category.height}px;
   display: inline-block;

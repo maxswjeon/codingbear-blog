@@ -19,7 +19,8 @@ function PageNavEntry(props: React.PropsWithChildren<NavEntryProps>): React.Reac
 const Item = styled.li`
   list-style-type: none;
   display: block;
-  width: ${StyleConfig.navigation.width}px;
+  max-width: ${StyleConfig.navigation.width}px;
+  width: calc((100% - 25px) / 6);
   height: ${StyleConfig.navigation.height}px;
   float:left;
   box-sizing: border-box;
@@ -29,7 +30,8 @@ const Item = styled.li`
     border-bottom: 5px solid ${StyleConfig.navigation.hover}
   } 
   
-  @media screen and (max-width: 640px) {
+  @media screen and (max-width: ${StyleConfig.header.breakpoint}px) {
+    max-width: 100%;
     width: 100%;
     height: ${StyleConfig.navigation.height_mobile}px;
     border-bottom: none;

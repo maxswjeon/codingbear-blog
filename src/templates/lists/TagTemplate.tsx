@@ -54,7 +54,7 @@ export default function (props: QueryData) {
 
     return (
         <PageTemplate
-            title={project! + '-' + BlogConfig.name}
+            title={project! + ' - ' + BlogConfig.name}
             category={project!}
             content={<TagTemplate data={data}/>}
         />

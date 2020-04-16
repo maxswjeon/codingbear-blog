@@ -33,7 +33,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.a`
-  padding: 75px 0 25px 0;
+  padding: ${StyleConfig.header.padding_top}px 0 ${StyleConfig.header.padding_bottom}px 0;
   display: block;
   float: left;
   font-family: 'Noto Sans KR', sans-serif;

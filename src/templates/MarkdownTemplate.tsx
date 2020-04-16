@@ -11,15 +11,20 @@
  */
 
 import React from "react";
+import {Helmet} from "react-helmet";
 import 'normalize.css';
 
-import styled from "styled-components";
+import styled, {createGlobalStyle} from "styled-components";
 
 import {graphql} from "gatsby";
 
-import {BlogConfig} from "../config";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faFolderOpen} from "@fortawesome/free-solid-svg-icons";
+
+import {BlogConfig, StyleConfig} from "../config";
 import MarkdownNode from "../types/MarkdownNode";
-import PageTemplate from "./PageTemplate";
+import PageHeader from "../components/PageHeader";
+import {Container, GlobalStyles, Info, PageContent} from "./PageTemplate";
 
 interface QueryData {
     data: {
@@ -27,28 +32,115 @@ interface QueryData {
     }
 }
 
-function MarkdownTemplate({data}: QueryData) {
-    const {title, date} = data.markdownRemark.frontmatter!;
-
-    return (
-        <div>=
-            <Title>{title}</Title>
-            <UploadDate>{date}</UploadDate>
-            <Content className="markdown-body" dangerouslySetInnerHTML={{__html: data.markdownRemark!.html!}}/>
-        </div>
-    );
+interface MarkdownTemplateState {
+    scroll: number,
 }
 
-/*
- * const CategoryText = styled.a`
- *   text-decoration: none;
- *   line-height: 50px;
- *   height: 50px;
- *   display: inline-block;
- *   color: #959da5;
- *   margin: 0 10px;
- * `;
- */
+class MarkdownTemplate extends React.Component<QueryData, MarkdownTemplateState> {
+    constructor(props: QueryData) {
+        super(props);
+
+        this.onScroll = this.onScroll.bind(this);
+        this.state = {
+            scroll: 0
+        }
+    }
+
+    onScroll() {
+        const content = document.getElementById("content");
+        const sidebar = document.getElementById("sidebar-toc");
+
+        if (!content) {
+            console.error('#content not found');
+            return;
+        }
+
+        if (!sidebar) {
+            console.error('#sidebar-toc not found');
+            return;
+        }
+
+        // content margin top : -50px
+        if (window.scrollY >= content.offsetTop + 50) {
+            if (!sidebar.classList.contains("sticky")) {
+                sidebar.classList.add("sticky");
+            }
+        } else {
+            if (sidebar.classList.contains("sticky")) {
+                sidebar.classList.remove("sticky");
+            }
+        }
+    }
+
+    componentDidMount(): void {
+        window.addEventListener('scroll', this.onScroll);
+    }
+
+    componentWillUnmount(): void {
+        window.removeEventListener('scroll', this.onScroll);
+    }
+
+    render() {
+        const {data} = this.props;
+
+        const {html, tableOfContents} = data.markdownRemark;
+        const {title, date} = data.markdownRemark.frontmatter!;
+        const {category} = data.markdownRemark.fields!;
+
+        const toc = tableOfContents!
+            .replace(/\/#/g, '#')
+            .replace(/<ul>/g, '<ul class="toc-list">');
+
+        return (
+            <div>
+                <Helmet>
+                    <title>{title! + ' - ' + BlogConfig.name}</title>
+                </Helmet>
+                <GlobalStyles/>
+                <PageHeader/>
+                <StickyTableOfContents id="sidebar-toc">
+                    <TocHeading id="toc-heading">Table of Contents</TocHeading>
+                    <div dangerouslySetInnerHTML={{__html: toc}}/>
+                </StickyTableOfContents>
+                <PageContent id="content">
+                    <Container>
+                        <Info>
+                            <FontAwesomeIcon icon={faFolderOpen} color='#444'/>
+                            <CategoryText>{category}</CategoryText>
+                        </Info>
+
+                        <MarkdownStyle/>
+                        <Title>{title}</Title>
+                        <UploadDate>{date}</UploadDate>
+                        <TableOfContents>
+                            <TocHeading id="toc-heading">Table of Contents</TocHeading>
+                            <div dangerouslySetInnerHTML={{__html: toc}}/>
+                        </TableOfContents>
+                        <Content className="markdown-body"
+                                 dangerouslySetInnerHTML={{__html: html!}}/>
+                    </Container>
+                </PageContent>
+            </div>
+        );
+    }
+}
+
+const headerTop =
+    StyleConfig.header.padding_top
+    + StyleConfig.header.padding_bottom
+    + StyleConfig.navigation.height
+    + StyleConfig.category.height
+    + 36 // Heading Height, 2em;
+
+const CategoryText = styled.a`
+  text-decoration: none;
+  line-height: 50px;
+  height: 50px;
+  display: inline-block;
+  color: #959da5;
+  margin: 0 10px;
+`;
+
 const Title = styled.h1`
   margin: 32px 0 10px 0;
   line-height: 50px;
@@ -64,8 +156,50 @@ const UploadDate = styled.h2`
   font-size: 1em;
 `;
 
-const Content = styled.div`
+const TableOfContents = styled.div`
+  display: none;
+  
+  @media screen and (max-width: ${StyleConfig.content.width + 450}px) {
+    display: block;
+  }
+`;
+
+const StickyTableOfContents = styled.div`
+  position: absolute;
+  width: 250px;
+  top: ${headerTop + 25}px;
+  left: calc((100vw - ${StyleConfig.content.width}px)/ 2 - 250px);
+  overflow-x: hidden;
+`;
+
+const TocHeading = styled.h2`
   margin-top: 32px;
+  margin-bottom: 0;
+`;
+
+const Content = styled.div`
+`;
+
+const MarkdownStyle = createGlobalStyle`
+  .toc {
+    display: none;
+  }
+  
+  .toc-list {
+    padding-inline-start: 20px;
+  }
+  .toc-list > li {
+    padding: 5px 0;
+  }
+  .toc-list > li > p {
+    margin: 0;
+  }
+  
+  .sticky {
+    position: fixed;
+    top: 25px;
+    left: calc((100vw - ${StyleConfig.content.width}px)/ 2 - 250px);
+  }
 `;
 
 export const pageQuery = graphql`
@@ -80,20 +214,13 @@ export const pageQuery = graphql`
                 slug
                 category
             }
+            headings {
+                depth
+                value
+            }
+            tableOfContents
         }
     }
 `;
 
-export default function (props: QueryData) {
-    const {data} = props;
-    const {category} = data.markdownRemark.fields!;
-    const {title} = data.markdownRemark.frontmatter!;
-
-    return (
-        <PageTemplate
-            title={title! + '-' + BlogConfig.name}
-            category={category!}
-            content={<MarkdownTemplate data={data}/>}
-        />
-    )
-}
+export default MarkdownTemplate;

@@ -1,6 +1,8 @@
 type color = string;
 
 interface HeaderStyleConfig {
+    padding_top: number,
+    padding_bottom: number,
     breakpoint: number,
     background: color,
     text_color: color,

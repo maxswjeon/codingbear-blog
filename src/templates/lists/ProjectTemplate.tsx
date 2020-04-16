@@ -72,7 +72,7 @@ export default function (props: QueryData) {
 
     return (
         <PageTemplate
-            title={category + '-' + BlogConfig.name}
+            title={category + ' - ' + BlogConfig.name}
             category={'/' + category + '/projects'}
             content={<ProjectTemplate data={data}/>}
         />

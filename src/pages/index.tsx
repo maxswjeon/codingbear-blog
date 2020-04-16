@@ -21,6 +21,7 @@ function MainPage({data}: QueryData) {
 
     return (
         <div>
+            <h1>Recent Posts</h1>
             {
                 markdown.map((post) => {
                     const {title, date} = post.frontmatter!;
@@ -28,8 +29,8 @@ function MainPage({data}: QueryData) {
 
                     return (
                         <div>
-                            <h1>{title}</h1>
-                            <h2>{date}</h2>
+                            <h2>{title}</h2>
+                            <h3>{date}</h3>
                             <p>{slug}</p>
                         </div>
                     );
