@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
+import {StyleConfig} from "../config";
 
 interface NavEntryProps {
     selected?: boolean;
@@ -18,22 +19,22 @@ function HiddenNavEntry(props: React.PropsWithChildren<NavEntryProps>): React.Re
 const Item = styled.li`
   display: none;
   
-  @media (max-width: 640px) {
+  @media (max-width: ${StyleConfig.header.breakpoint}px) {
       list-style-type: none;
       display: block;
       width: 100%;
-      height: 50px;
+      height: ${StyleConfig.navigation.height_mobile}px;
       float:left;
       box-sizing: border-box;
       border-bottom: none;
       
       &:hover {
         border-bottom: none;
-        background-color: #E91E63
+        background-color: ${StyleConfig.navigation.hover}
       }
       
       &.selected {
-        border-bottom: #E91E63;
+        border-bottom: ${StyleConfig.navigation.selected};
       }
   }
 `;
@@ -43,9 +44,13 @@ const Link = styled.a`
   height: 100%;
   display: block;
   text-align: center;
-  line-height: 50px;
-  color: white;
+  line-height: ${StyleConfig.navigation.height}px;
+  color: ${StyleConfig.navigation.text_color};
   text-decoration: none;
+  
+  @media screen and (max-width: ${StyleConfig.header.breakpoint}px) {
+    line-height: ${StyleConfig.navigation.height_mobile}px;
+  }
 `;
 
 export default HiddenNavEntry;

@@ -19,6 +19,8 @@ import {graphql} from "gatsby";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderOpen} from "@fortawesome/free-solid-svg-icons";
 
+import {BlogConfig} from "../../config";
+
 import {Container, GlobalStyles, Info, InfoTitle, PageContent} from '../../styles/PageStyles';
 import PageHeader from "../../components/PageHeader";
 import ProjectList from "../../components/ProjectList";
@@ -43,7 +45,7 @@ export default function ({data}: QueryData) {
     return (
         <div>
             <Helmet>
-                <title>{category} Projects - 코딩하는 곰의 공부일지</title>
+                <title>{category} - {BlogConfig.name}</title>
             </Helmet>
             <GlobalStyles/>
             <PageHeader/>

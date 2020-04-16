@@ -23,6 +23,8 @@ import {graphql} from "gatsby";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderOpen} from "@fortawesome/free-solid-svg-icons";
 
+import {BlogConfig} from "../config";
+
 import {Container, GlobalStyles, Info, InfoTitle, PageContent} from '../styles/PageStyles';
 import PageHeader from "../components/PageHeader";
 import MarkdownNode from "../types/MarkdownNode";
@@ -44,7 +46,7 @@ export default function ({data}: QueryData) {
     return (
         <div>
             <Helmet>
-                <title>{title} - 코딩하는 곰의 공부일지</title>
+                <title>{title} - {BlogConfig.name}</title>
             </Helmet>
             <GlobalStyles/>
             <PageHeader/>

@@ -6,6 +6,7 @@ import PageNavEntry from "./PageNavEntry";
 import HiddenNavEntry from "./HiddenNavEntry";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBars} from "@fortawesome/free-solid-svg-icons";
+import {StyleConfig} from "../config";
 
 interface PageNavigationProps {
     location?: WindowLocation;
@@ -128,18 +129,18 @@ export default function (props: PageNavigationProps) {
 }
 
 const Container = styled.ul`
-  background-color: #282C34;
+  background-color: ${StyleConfig.navigation.background};
   width: 100%;
-  max-width: 968px;
+  max-width: ${StyleConfig.content.width}px;
   margin: auto;
   padding: 0;
   overflow: auto;
   box-sizing: border-box;
   
-  @media only screen and (max-width: 968px) {
+  @media only screen and (max-width: ${StyleConfig.content.width}px) {
     padding-left: 25px;
   }
-  @media only screen and (max-width: 640px) {
+  @media only screen and (max-width: ${StyleConfig.header.breakpoint}px) {
     padding: 0; 
   }
   @media print {

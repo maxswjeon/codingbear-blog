@@ -1,5 +1,6 @@
 import {dom} from "@fortawesome/fontawesome-svg-core";
 import styled, {createGlobalStyle} from "styled-components";
+import {StyleConfig} from "../config";
 
 const GlobalStyles = createGlobalStyle`
     ${dom.css()}
@@ -9,35 +10,35 @@ const PageContent = styled.div`
   width: 100%;
   overflow: auto;
   padding-bottom: 50px;
-  margin-top: -50px;
+  margin-top: -${StyleConfig.category.height}px;
 `;
 
 const Container = styled.div`
   width: 100%;
-  max-width: 968px;
+  max-width: ${StyleConfig.content.width}px;
   margin: auto;
-  padding: 32px;
+  padding: ${StyleConfig.content.padding}px;
   box-sizing: border-box;
   overflow: auto;
-  background-color: #FFFFFF;
-  -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-  -moz-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  background-color: ${StyleConfig.content.background};
+  -webkit-box-shadow: ${StyleConfig.content.shadow};
+  -moz-box-shadow: ${StyleConfig.content.shadow};
+  box-shadow: ${StyleConfig.content.shadow};
 `;
 
 const Info = styled.div`
-  height: 50px;
-  margin: -32px -32px 0 -32px;
-  padding: 0 32px;
+  height: ${StyleConfig.category.height}px;
+  margin: -${StyleConfig.content.padding}px -${StyleConfig.content.padding}px 0 -${StyleConfig.content.padding}px;
+  padding: 0 ${StyleConfig.content.padding}px;
   box-sizing: border-box;
-  border-bottom: 1px solid #EAEAEA;
+  border-bottom: 1px solid ${StyleConfig.category.border_color};
 `;
 
 const InfoTitle = styled.span`
-  line-height: 50px;
-  height: 50px;
+  line-height:  ${StyleConfig.category.height}px;
+  height: ${StyleConfig.category.height}px;
   display: inline-block;
-  color: #959da5;
+  color: ${StyleConfig.category.text_color};
   margin: 0 10px;
 `;
 

@@ -1,29 +1,23 @@
 import React from "react";
 import {Helmet} from "react-helmet";
-import PageHeader from "../components/PageHeader";
+import 'normalize.css';
+
 import {graphql, StaticQuery} from "gatsby";
+
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderOpen} from "@fortawesome/free-solid-svg-icons";
-import {config, dom} from "@fortawesome/fontawesome-svg-core";
-import styled, {createGlobalStyle} from "styled-components";
-import PageFooter from "../components/PageFooter";
 
-interface PostData {
-    fields: {
-        category: string
-        slug: string,
-    },
-    frontmatter: {
-        title: string,
-        date: string,
-        tags?: string[]
-    }
-}
+import {BlogConfig} from "../config";
+
+import {Container, GlobalStyles, Info, InfoTitle, PageContent} from '../styles/PageStyles';
+import PageHeader from "../components/PageHeader";
+import PageFooter from "../components/PageFooter";
+import MarkdownNode from "../types/MarkdownNode";
 
 interface QueryData {
     data: {
         allMarkdownRemark: {
-            nodes: PostData[]
+            nodes: MarkdownNode[]
         }
     }
 }
@@ -34,7 +28,7 @@ function MainPage({data}: QueryData) {
     return (
         <div>
             <Helmet>
-                <title>코딩하는 곰의 공부일지</title>
+                <title>{BlogConfig.name}</title>
             </Helmet>
             <GlobalStyles/>
             <PageHeader/>
@@ -46,8 +40,8 @@ function MainPage({data}: QueryData) {
                     </Info>
                     {
                         markdown.map((post) => {
-                            const {title, date} = post.frontmatter;
-                            const {slug} = post.fields;
+                            const {title, date} = post.frontmatter!;
+                            const {slug} = post.fields!;
 
                             return (
                                 <div>
@@ -64,49 +58,6 @@ function MainPage({data}: QueryData) {
         </div>
     );
 }
-
-config.autoAddCss = false;
-const GlobalStyles = createGlobalStyle`
-    ${dom.css()}
-`;
-
-const PageContent = styled.div`
-  width: 100%;
-  overflow: auto;
-  padding-bottom: 50px;
-  margin-top: -50px;
-  position:relative;
-  flex: 1;
-`;
-
-const Container = styled.div`
-  width: 100%;
-  max-width: 968px;
-  margin: auto;
-  padding: 32px;
-  box-sizing: border-box;
-  overflow: auto;
-  background-color: #FFFFFF;
-  -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-  -moz-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-`;
-
-const Info = styled.div`
-  height: 50px;
-  margin: -32px -32px 0 -32px;
-  padding: 0 32px;
-  box-sizing: border-box;
-  border-bottom: 1px solid #EAEAEA;
-`;
-
-const InfoTitle = styled.span`
-  line-height: 50px;
-  height: 50px;
-  display: inline-block;
-  color: #959da5;
-  margin: 0 10px;
-`;
 
 export default function () {
     return (<StaticQuery render={data => <MainPage data={data}/>} query={graphql`

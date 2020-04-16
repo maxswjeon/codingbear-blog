@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
+import {StyleConfig} from "../config";
 
 interface NavEntryProps {
     Href?: string;
@@ -18,36 +19,40 @@ function PageNavEntry(props: React.PropsWithChildren<NavEntryProps>): React.Reac
 const Item = styled.li`
   list-style-type: none;
   display: block;
-  width: 100px;
-  height: 50px;
+  width: ${StyleConfig.navigation.width}px;
+  height: ${StyleConfig.navigation.height}px;
   float:left;
   box-sizing: border-box;
-  border-bottom: ${(props: NavEntryProps) => props.selected ? '5px solid #E91E63' : 'none'};
+  border-bottom: ${(props: NavEntryProps) => props.selected ? `5px solid ${StyleConfig.navigation.selected}` : 'none'};
   
   &:hover {
-    border-bottom: 5px solid #E91E63
+    border-bottom: 5px solid ${StyleConfig.navigation.hover}
   } 
   
   @media screen and (max-width: 640px) {
     width: 100%;
+    height: ${StyleConfig.navigation.height_mobile}px;
     border-bottom: none;
-    ${(props: NavEntryProps) => props.selected ? 'background-color: #E91E63' : ''};
+    ${(props: NavEntryProps) => props.selected ? `background-color: ${StyleConfig.navigation.selected}` : ''};
     &:hover {
-      background-color: #E91E63;
+      background-color: ${StyleConfig.navigation.hover};
     }
     ${(props: NavEntryProps) => props.hidden ? 'display: none' : ''};
   }
 `;
 
-//${(props: NavEntryProps) => props.hidden ? 'display: none' : ''}
 const Link = styled.a`
   width: 100%;
   height: 100%;
   display: block;
   text-align: center;
-  line-height: 50px;
-  color: white;
+  line-height: ${StyleConfig.navigation.height}px;
+  color: ${StyleConfig.navigation.text_color};
   text-decoration: none;
+  
+  @media screen and (max-width: ${StyleConfig.header.breakpoint}px) {
+    line-height: ${StyleConfig.navigation.height_mobile}px;
+  }
 `;
 
 export default PageNavEntry;
