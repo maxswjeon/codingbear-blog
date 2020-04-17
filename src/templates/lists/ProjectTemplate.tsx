@@ -16,18 +16,16 @@ import 'normalize.css';
 import {graphql} from "gatsby";
 
 import {BlogConfig} from "../../config";
-import ProjectList from "../../components/ProjectList";
-import ProjectNode from "../../types/ProjectNode";
 import PageTemplate from "../PageTemplate";
+import ProjectList from "../../components/ProjectList";
+import CategoryNode from "../../types/CategoryNode";
+import ProjectNode from "../../types/ProjectNode";
 
 interface QueryData {
     data: {
+        category: CategoryNode
         allProject: {
             nodes: ProjectNode[]
-        }
-        category: {
-            title: string
-            category: string
         }
     }
 }
@@ -45,6 +43,10 @@ function ProjectTemplate({data}: QueryData) {
 
 export const pageQuery = graphql`
     query CategoryProjectQuery($category: String!) {
+        category(category: {eq: $category}) {
+            title
+            category
+        }
         allProject(filter: {fields: {type: {eq: $category}}}, sort: {fields: [fields___lastUpdate, title], order: DESC}) {
             nodes {
                 title
@@ -59,21 +61,17 @@ export const pageQuery = graphql`
                 }
             }
         }
-        category(category: {eq: $category}) {
-            title
-            category
-        }
     }
 `;
 
 export default function (props: QueryData) {
     const {data} = props;
-    const {category} = data.category;
+    const {title, category} = data.category;
 
     return (
         <PageTemplate
-            title={category + ' - ' + BlogConfig.name}
-            category={'/' + category + '/projects'}
+            title={title! + ' - ' + BlogConfig.name}
+            category={'/' + category! + '/projects'}
             content={<ProjectTemplate data={data}/>}
         />
     )

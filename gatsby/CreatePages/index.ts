@@ -13,7 +13,8 @@ interface MarkdownNode {
 interface ProjectNode {
     title: string
     fields: {
-        slug: string
+        slug: string,
+        type: string
     }
 }
 
@@ -52,6 +53,7 @@ const createPages: GatsbyNode["createPages"] = async function (args) {
           title
           fields {
             slug
+            type
           }
         }
       }
@@ -88,14 +90,15 @@ const createPages: GatsbyNode["createPages"] = async function (args) {
     }
 
     for (const project of data.allProject.nodes) {
-        const {slug} = project.fields;
+        const {slug, type} = project.fields;
         const {title} = project;
 
         createPage({
             path: slug,
             component: path.join(templatePath, 'entries/ProjectTemplate.tsx'),
             context: {
-                project: title
+                project: title,
+                type
             }
         });
     }

@@ -91,6 +91,20 @@ class MarkdownTemplate extends React.Component<QueryData, MarkdownTemplateState>
             .replace(/\/#/g, '#')
             .replace(/<ul>/g, '<ul class="toc-list">');
 
+        const stickyTOC = (
+            <StickyTableOfContents id="sidebar-toc">
+                <TocHeading id="toc-heading">Table of Contents</TocHeading>
+                <div dangerouslySetInnerHTML={{__html: toc}}/>
+            </StickyTableOfContents>
+        );
+
+        const contentTOC = (
+            <TableOfContents>
+                <TocHeading id="toc-heading">Table of Contents</TocHeading>
+                <div dangerouslySetInnerHTML={{__html: toc}}/>
+            </TableOfContents>
+        );
+
         return (
             <div>
                 <Helmet>
@@ -98,15 +112,9 @@ class MarkdownTemplate extends React.Component<QueryData, MarkdownTemplateState>
                 </Helmet>
                 <GlobalStyles/>
                 <PageHeader/>
-                {
-                    tableOfContents ?
-                        <StickyTableOfContents id="sidebar-toc">
-                            <TocHeading id="toc-heading">Table of Contents</TocHeading>
-                            <div dangerouslySetInnerHTML={{__html: toc}}/>
-                        </StickyTableOfContents>
-                        :
-                        null
-                }
+
+                {tableOfContents ? stickyTOC : null}
+
                 <PageContent id="content">
                     <Container>
                         <Info>
@@ -117,15 +125,9 @@ class MarkdownTemplate extends React.Component<QueryData, MarkdownTemplateState>
                         <MarkdownStyle/>
                         <Title>{title}</Title>
                         <UploadDate>{date}</UploadDate>
-                        {
-                            tableOfContents ?
-                                <TableOfContents>
-                                    <TocHeading id="toc-heading">Table of Contents</TocHeading>
-                                    <div dangerouslySetInnerHTML={{__html: toc}}/>
-                                </TableOfContents>
-                                :
-                                null
-                        }
+
+                        {tableOfContents ? contentTOC : null}
+
                         <Content className="markdown-body"
                                  dangerouslySetInnerHTML={{__html: html!}}/>
                     </Container>

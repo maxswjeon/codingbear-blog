@@ -16,18 +16,21 @@ import 'normalize.css';
 import {graphql} from "gatsby";
 
 import {BlogConfig} from "../../config";
-import MarkdownNode from "../../types/MarkdownNode";
 import PageTemplate from "../PageTemplate";
+import CategoryNode from "../../types/CategoryNode";
+import TagNode from "../../types/TagNode";
 
 interface QueryData {
     data: {
-        allMarkdownRemark: {
-            nodes: MarkdownNode[]
+        category: CategoryNode
+        allTag: {
+            nodes: TagNode[]
         }
     }
 }
 
 function TagTemplate({data}: QueryData) {
+    // TODO: Implement Tag List
     return (
         <div>
 
@@ -37,6 +40,10 @@ function TagTemplate({data}: QueryData) {
 
 export const pageQuery = graphql`
     query GetAllTagsInCategory($category: String!) {
+      category(category: {eq: $category}) {
+        title
+        category
+      }
       allTag(filter: {category: {eq: $category}}) {
         nodes {
           title
@@ -48,14 +55,13 @@ export const pageQuery = graphql`
 `;
 
 
-export default function (props: QueryData) {
-    const {data} = props;
-    const {project} = data.allMarkdownRemark.nodes[0].fields!;
+export default function ({data}: QueryData) {
+    const {title, category} = data.category;
 
     return (
         <PageTemplate
-            title={project! + ' - ' + BlogConfig.name}
-            category={project!}
+            title={title! + ' - ' + BlogConfig.name}
+            category={'/' + category! + '/tags'}
             content={<TagTemplate data={data}/>}
         />
     )
