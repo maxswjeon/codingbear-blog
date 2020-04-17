@@ -23,13 +23,17 @@ const Item = styled.li`
   margin: 10px 0;
 `;
 
-const DateText = styled.b`
+const DateText = styled.span`
   margin-right: 10px;
+  color: #555;
+  font-size: 1.1em;
 `;
 
 const Link = styled.a`
   text-decoration: none;
   color: black;
+  font-weight: bold;
+  font-size: 1.1em;
 `;
 
 export default PostItem;
