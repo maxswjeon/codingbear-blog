@@ -60,7 +60,8 @@
     "stickyfilljs": "^2.1.0",
     "styled-components": "^5.1.0",
     "twemoji": "^12.1.5",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "gatsby-plugin-ts-config": "^0.2.2"
   },
   "devDependencies": {
     "@hot-loader/react-dom": "^16.13.0",
@@ -72,7 +73,6 @@
     "@types/react-router-dom": "^5.1.4",
     "@types/styled-components": "^5.0.1",
     "cross-env": "^7.0.2",
-    "gatsby-plugin-ts-config": "^0.2.2",
     "react-hot-loader": "^4.12.20"
   }
 }

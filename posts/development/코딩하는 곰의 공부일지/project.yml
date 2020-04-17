@@ -1,0 +1,7 @@
+title: "코딩하는 곰의 공부일지"
+description: "Gatsby.js와 React.js를 이용한 Static Site Blog 제작기"
+language:
+  - javascript
+libraries:
+  - Gatsby.js
+  - React.js

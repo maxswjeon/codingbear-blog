@@ -23,7 +23,7 @@ const CreateMarkdownField: GatsbyNode['onCreateNode'] = async function (args) {
     const fileNode = <FileSystemNode>fileNode_;
 
     const pathSlice = fileNode.relativePath.split('/').filter(e => e);
-    const category = fileNode.relativePath.split('/').filter(e => e)[0];
+    const category = pathSlice.length !== 1 ? pathSlice[0] : '';
 
     const projectPath = path.join(path.dirname(fileNode.absolutePath), 'project.yml');
     if (await exists(projectPath)) {
