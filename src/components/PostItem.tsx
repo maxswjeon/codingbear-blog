@@ -4,15 +4,14 @@ import styled from "styled-components";
 interface PostItemProps {
     href: string,
     title: string,
-    date: string,
-    key: string
+    date: string
 }
 
 function PostItem(props: PostItemProps) {
-    const {href, title, date, key} = props;
+    const {href, title, date} = props;
 
     return (
-        <Item key={key}>
+        <Item>
             <DateText>{date}</DateText>
             <Link href={href}>{title}</Link>
         </Item>

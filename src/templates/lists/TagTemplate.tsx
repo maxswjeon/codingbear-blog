@@ -19,6 +19,7 @@ import {BlogConfig} from "../../config";
 import PageTemplate from "../PageTemplate";
 import CategoryNode from "../../types/CategoryNode";
 import TagNode from "../../types/TagNode";
+import TagList from "../../components/TagList";
 
 interface QueryData {
     data: {
@@ -30,10 +31,12 @@ interface QueryData {
 }
 
 function TagTemplate({data}: QueryData) {
-    // TODO: Implement Tag List
+    const tags = data.allTag.nodes;
+
     return (
         <div>
-
+            <h1>Tags</h1>
+            <TagList data={tags}/>
         </div>
     )
 }

@@ -59,7 +59,6 @@ function CategoryTemplate({data}: QueryData) {
         );
     }
 
-    // TODO: Design Post List
     const postList = (
         <List>
             <SubTitleWrap>
