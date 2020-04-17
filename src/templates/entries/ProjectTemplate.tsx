@@ -13,6 +13,7 @@ import {graphql} from "gatsby";
 
 import {BlogConfig} from "../../config";
 import PageTemplate from "../PageTemplate";
+import PostList from "../../components/PostList";
 import CategoryNode from "../../types/CategoryNode";
 import ProjectNode from "../../types/ProjectNode";
 import MarkdownNode from "../../types/MarkdownNode";
@@ -36,20 +37,7 @@ function ProjectTemplate({data}: QueryData) {
             <h1>{title}</h1>
             <h2>{description}</h2>
             <h2>Posts</h2>
-            {
-                markdown.map((post) => {
-                    const {title, date} = post.frontmatter!;
-                    const {slug} = post.fields!;
-
-                    return (
-                        <div key={slug}>
-                            <h3>{title}</h3>
-                            <h4>{date}</h4>
-                            <p>{slug}</p>
-                        </div>
-                    );
-                })
-            }
+            <PostList data={markdown}/>
         </div>
     )
 }
