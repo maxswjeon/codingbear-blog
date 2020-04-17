@@ -24,10 +24,10 @@ import {graphql} from "gatsby";
 import {BlogConfig} from "../config";
 import PageTemplate from "./PageTemplate";
 import ProjectList from "../components/ProjectList";
+import PostList from "../components/PostList";
 import MarkdownNode from "../types/MarkdownNode";
 import CategoryNode from "../types/CategoryNode";
 import ProjectNode from "../types/ProjectNode";
-import TagNode from "../types/TagNode";
 
 interface QueryData {
     data: {
@@ -38,59 +38,35 @@ interface QueryData {
         allProject: {
             nodes: ProjectNode[]
         }
-        allTag: {
-            nodes: TagNode[]
-        }
     }
 }
 
 function CategoryTemplate({data}: QueryData) {
     const markdown = data.allMarkdownRemark.nodes;
     const projects = data.allProject.nodes;
-    const tags = data.allTag.nodes;
     const {title, description, category, project} = data.category;
 
-    let RecentProjectList: React.ReactElement | null = null;
+    let recentProjects: React.ReactElement | null = null;
     if (project && projects.length !== 0) {
-        RecentProjectList = (
+        recentProjects = (
             <List>
-                <h2>Recent Projects</h2>
+                <SubTitleWrap>
+                    <ListTitle>Recent Projects</ListTitle>
+                    <Link href={'/' + category! + '/projects'}>Show All Projects</Link>
+                </SubTitleWrap>
                 <ProjectList data={projects}/>
-                <a href={'/' + category! + '/projects'}>Show All Projects</a>
-            </List>
-        );
-    }
-
-    let TagList: React.ReactElement | null = null;
-    if (tags.length > 0) {
-        // TODO: Design Tag List
-        TagList = (
-            <List>
-                <h2>Tags</h2>
-
-                <a href={'/' + category! + '/tags'}>Show Posts by Tag</a>
             </List>
         );
     }
 
     // TODO: Design Post List
-    const PostList = (
+    const postList = (
         <List>
-            <h2>Posts</h2>
-            {
-                markdown.map((post) => {
-                    const {title, date} = post.frontmatter!;
-                    const {slug} = post.fields!;
-
-                    return (
-                        <div key={slug}>
-                            <h3>{title}</h3>
-                            <h4>{date}</h4>
-                            <p>{slug}</p>
-                        </div>
-                    );
-                })
-            }
+            <SubTitleWrap>
+                <ListTitle>Posts</ListTitle>
+                <Link href={'/' + category! + '/tags'}>Show Posts by Tag</Link>
+            </SubTitleWrap>
+            <PostList data={markdown}/>
         </List>
     )
 
@@ -98,16 +74,30 @@ function CategoryTemplate({data}: QueryData) {
         <div>
             <h1>{title}</h1>
             <p>{description}</p>
-
-            {RecentProjectList}
-            {TagList}
-            {PostList}
+            {recentProjects}
+            {postList}
         </div>
     )
 }
 
 const List = styled.div`
   margin: 50px 0;
+`;
+
+const SubTitleWrap = styled.div`
+  position: relative;
+`;
+
+const ListTitle = styled.h2`
+  margin: 0;
+`;
+
+const Link = styled.a`
+  text-decoration: none;
+  color: #999;
+  position: absolute;
+  bottom: 0;
+  right: 0;
 `;
 
 export const pageQuery = graphql`
@@ -142,12 +132,6 @@ export const pageQuery = graphql`
                     type
                 }
                 description
-            }
-        }
-        allTag(filter: {category: {eq: $category}}, limit: 50) {
-            nodes {
-                category
-                title
             }
         }
     }
