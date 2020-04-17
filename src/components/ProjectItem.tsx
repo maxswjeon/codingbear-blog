@@ -51,6 +51,7 @@ const Link = styled.a`
 const StyledIcon = styled(FontAwesomeIcon)`
   float: left;
   padding: 0 15px;
+  width: 15px !important;
   height: 75px !important;
   line-height: 75px;
   

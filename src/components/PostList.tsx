@@ -15,14 +15,15 @@ function PostList(props: PostListProps): React.ReactElement<PostListProps> {
     return (
         <List>
             {data.map(markdown => {
-                const {title, date} = markdown.frontmatter!;
+                const {title, date, tags} = markdown.frontmatter!;
                 const slug = markdown.fields!.slug!;
                 return (
                     <PostItem
                         href={slug}
                         key={slug}
                         title={title!}
-                        date={date!}/>
+                        date={date!}
+                        tags={tags}/>
                 );
             })}
         </List>
@@ -31,7 +32,7 @@ function PostList(props: PostListProps): React.ReactElement<PostListProps> {
 
 const List = styled.ul`
   list-style: none;
-  padding-left: 20px;
+  padding: 0;
 `;
 
 export default PostList;

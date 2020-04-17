@@ -40,6 +40,7 @@ export default function () {
                 frontmatter {
                     title
                     date
+                    tags
                 }
             }
         }
