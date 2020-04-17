@@ -1,22 +1,10 @@
-import {GatsbyNode} from "gatsby";
 import path from "path";
 
-interface MarkdownNode {
-    fields: {
-        slug: string,
-    },
-    frontmatter: {
-        tags?: string[]
-    }
-}
+import {GatsbyNode} from "gatsby";
 
-interface ProjectNode {
-    title: string
-    fields: {
-        slug: string,
-        type: string
-    }
-}
+import MarkdownNode from "../../src/types/MarkdownNode";
+import ProjectNode from "../../src/types/ProjectNode";
+import CategoryNode from "../../src/types/CategoryNode";
 
 interface MarkdownQueryResult {
     data: {
@@ -26,10 +14,11 @@ interface MarkdownQueryResult {
         allProject: {
             nodes: ProjectNode[]
         }
+        allCategory: {
+            nodes: CategoryNode[]
+        }
     }
 }
-
-const categories = ['development', 'security', 'electronics', 'study', 'extra'];
 
 const createPages: GatsbyNode["createPages"] = async function (args) {
 
@@ -42,6 +31,8 @@ const createPages: GatsbyNode["createPages"] = async function (args) {
         nodes {
           fields {
             slug
+            category
+            directory
           }
           frontmatter {
             tags
@@ -57,63 +48,71 @@ const createPages: GatsbyNode["createPages"] = async function (args) {
           }
         }
       }
+      allCategory {
+        nodes {
+          category
+          project
+        }
+      }
     }
   `);
 
     const templatePath = path.join(__dirname, '../../src/templates');
 
     // Create Category Landing Page
-    for (const category of categories) {
+    for (const category of data.allCategory.nodes) {
         createPage({
-            path: '/' + category,
+            path: '/' + category.category!,
             component: path.join(templatePath, 'CategoryTemplate.tsx'),
             context: {
-                category
+                category: category.category!
             }
         });
 
         createPage({
-            path: '/' + category + '/projects',
-            component: path.join(templatePath, 'lists/ProjectTemplate.tsx'),
-            context: {
-                category
-            }
-        });
-
-        createPage({
-            path: '/' + category + '/tags',
+            path: '/' + category.category! + '/tags',
             component: path.join(templatePath, 'lists/TagTemplate.tsx'),
             context: {
-                category
+                category: category.category!
             }
         });
+
+        if (category.project) {
+            createPage({
+                path: '/' + category.category! + '/projects',
+                component: path.join(templatePath, 'lists/ProjectTemplate.tsx'),
+                context: {
+                    category: category.category!
+                }
+            });
+        }
     }
 
     for (const project of data.allProject.nodes) {
-        const {slug, type} = project.fields;
+        const {slug, type} = project.fields!;
         const {title} = project;
 
         createPage({
-            path: slug,
+            path: slug!,
             component: path.join(templatePath, 'entries/ProjectTemplate.tsx'),
             context: {
-                project: title,
-                type
+                project: title!,
+                type: type!
             }
         });
     }
 
     const createdTags: string[] = [];
     for (const markdown of data.allMarkdownRemark.nodes) {
-        const {slug} = markdown.fields;
-        const {tags} = markdown.frontmatter;
+        const {slug, category} = markdown.fields!;
+        const {tags} = markdown.frontmatter!;
 
         // Create Markdown Page (Content)
         createPage({
-            path: slug,
+            path: slug!,
             component: path.resolve(path.join(templatePath, `MarkdownTemplate.tsx`)),
             context: {
-                slug
+                slug: slug!
             },
         });
 
@@ -123,18 +122,16 @@ const createPages: GatsbyNode["createPages"] = async function (args) {
                     return;
                 }
 
-                const rootCategory = slug.split('/').filter(e => e)[0];
-
                 createPage({
-                    path: '/' + rootCategory + '/tags/' + tag,
+                    path: '/' + category! + '/tags/' + tag,
                     component: path.resolve(path.join(templatePath, 'entries/TagTemplate.tsx')),
                     context: {
                         tag: tag,
-                        category: rootCategory
+                        category: category!
                     }
                 });
 
-                createdTags.push(tag);
+                createdTags.push(tag!);
             }
         }
     }

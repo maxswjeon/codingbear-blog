@@ -15,6 +15,8 @@ import 'normalize.css';
 
 import {graphql} from "gatsby";
 
+import {faTag} from "@fortawesome/free-solid-svg-icons";
+
 import {BlogConfig} from "../../config";
 import PageTemplate from "../PageTemplate";
 import PostList from "../../components/PostList";
@@ -84,6 +86,7 @@ export default function (props: QueryData) {
             title={'Tag : ' + title! + ' - ' + BlogConfig.name}
             category={'/' + category! + '/tags/' + title!}
             content={<TagTemplate data={data}/>}
+            icon={faTag}
         />
     )
 }
