@@ -26,8 +26,19 @@ const Item = styled.li`
   box-sizing: border-box;
   border-bottom: ${(props: NavEntryProps) => props.selected ? `5px solid ${StyleConfig.navigation.selected}` : 'none'};
   
-  &:hover {
-    border-bottom: 5px solid ${StyleConfig.navigation.hover}
+  &::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 5px;
+    margin: -5px auto 0;
+    background-color: ${StyleConfig.navigation.hover};
+    transition: width 250ms;
+    -webkit-transition: width 250ms;
+  }
+  
+  &:hover::after {
+    width: 100%;
   } 
   
   @media screen and (max-width: ${StyleConfig.header.breakpoint}px) {
@@ -37,6 +48,8 @@ const Item = styled.li`
     border-bottom: none;
     ${(props: NavEntryProps) => props.selected ? `background-color: ${StyleConfig.navigation.selected}` : ''};
     &:hover {
+      transition: width 2s;
+      -webkit-transition: width 2s;
       background-color: ${StyleConfig.navigation.hover};
     }
     ${(props: NavEntryProps) => props.hidden ? 'display: none' : ''};
