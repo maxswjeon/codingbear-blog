@@ -74,7 +74,7 @@ const Title = styled.h2`
 const Description = styled.p`
   margin: 0 0 15px;
   width: 100%;
-  height: 15px;
+  height: 20px;
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: normal;
   font-size: 0.85em;
