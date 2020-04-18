@@ -39,7 +39,13 @@ const Item = styled.li`
   
   &:hover::after {
     width: 100%;
-  } 
+  }
+  
+  ${(props: NavEntryProps) => props.selected ? `
+    &::after{
+      content: none;
+    }
+  ` : ``};
   
   @media screen and (max-width: ${StyleConfig.header.breakpoint}px) {
     max-width: 100%;
@@ -50,9 +56,9 @@ const Item = styled.li`
     &:hover {
       background-color: ${StyleConfig.navigation.hover};
     }
-    &:hover::after {
-      width: 0;
-    } 
+    &::after{
+      content: none;
+    }
     ${(props: NavEntryProps) => props.hidden ? 'display: none' : ''};
   }
 `;
