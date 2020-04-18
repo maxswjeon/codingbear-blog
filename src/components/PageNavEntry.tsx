@@ -48,10 +48,11 @@ const Item = styled.li`
     border-bottom: none;
     ${(props: NavEntryProps) => props.selected ? `background-color: ${StyleConfig.navigation.selected}` : ''};
     &:hover {
-      transition: width 2s;
-      -webkit-transition: width 2s;
       background-color: ${StyleConfig.navigation.hover};
     }
+    &:hover::after {
+      width: 0;
+    } 
     ${(props: NavEntryProps) => props.hidden ? 'display: none' : ''};
   }
 `;
