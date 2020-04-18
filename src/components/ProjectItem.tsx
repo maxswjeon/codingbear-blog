@@ -54,15 +54,11 @@ const StyledIcon = styled(FontAwesomeIcon)`
   width: 15px !important;
   height: 75px !important;
   line-height: 75px;
-  
-  @media only screen and (max-width: 640px) {
-    height: 50px;
-    line-height: 50px;
-  }
 `;
 
 const InfoBox = styled.div`
   float: left;
+  width: calc(100% - 45px);
 `;
 
 const Title = styled.h2`
@@ -70,23 +66,21 @@ const Title = styled.h2`
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: bold;
   font-size: 1.25em;
-  
-  @media only screen and (max-width: 640px) {
-    font-size: 1.1em;
-    margin: 0;
-    line-height: 50px;
-  }
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const Description = styled.p`
   margin: 0 0 15px;
+  width: 100%;
+  height: 15px;
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: normal;
   font-size: 0.85em;
-  
-  @media only screen and (max-width: 640px) {
-    display: none;
-  }
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export default ProjectItem;

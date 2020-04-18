@@ -20,16 +20,18 @@ function PostItem(props: PostItemProps) {
                 <StyledIcon icon={faCircle} color="#444"/>
                 <InfoBox>
                     <Title>{title}</Title>
-                    <DateText>{date}</DateText>
-                    {
-                        tags ? tags.map((tag) => {
-                            return (
-                                <TagText>
-                                    {tag}
-                                </TagText>
-                            )
-                        }) : null
-                    }
+                    <Description>
+                        <DateText>{date}</DateText>
+                        {
+                            tags ? tags.map((tag) => {
+                                return (
+                                    <TagText>
+                                        {tag}
+                                    </TagText>
+                                )
+                            }) : null
+                        }
+                    </Description>
                 </InfoBox>
             </Link>
         </Item>
@@ -71,6 +73,8 @@ const StyledIcon = styled(FontAwesomeIcon)`
 
 const InfoBox = styled.div`
   float: left;
+  width: calc(100% - 45px);
+  overflow: hidden;
 `;
 
 const Title = styled.h2`
@@ -78,35 +82,39 @@ const Title = styled.h2`
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: bold;
   font-size: 1.25em;
-  
-  @media only screen and (max-width: 640px) {
-    font-size: 1.1em;
-    margin: 0;
-    line-height: 50px;
-  }
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
+
+const Description = styled.div`
+  width: 100%;
+  height: 25px;
+  margin: 0;
+  overflow: hidden;
+`
 
 const DateText = styled.p`
   margin: 0 0 10px 0;
+  height: 15px;
   padding: 5px 15px 5px 0;
+  float: left;
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: normal;
   font-size: 0.85em;
-  float: left;
-  
-  @media only screen and (max-width: 640px) {
-    display: none;
-  }
+  overflow: hidden;
 `;
 
 const TagText = styled.p`
   margin: 0 0 10px 0;
+  height: 15px;
   padding: 5px;
   background-color: #CCC;
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: normal;
   font-size: 0.8em;
   float: left;
+  overflow: hidden;
 `;
 
 export default PostItem;

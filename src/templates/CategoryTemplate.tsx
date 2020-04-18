@@ -71,13 +71,19 @@ function CategoryTemplate({data}: QueryData) {
 
     return (
         <div>
-            <h1>{title}</h1>
+            <CategoryTitle>{title}</CategoryTitle>
             <p>{description}</p>
             {recentProjects}
             {postList}
         </div>
     )
 }
+
+const CategoryTitle = styled.h1`
+  @media screen and (max-width: 400px) {
+    font-size: 7.5vw;
+  }
+`;
 
 const List = styled.div`
   margin: 50px 0;
@@ -97,6 +103,12 @@ const Link = styled.a`
   position: absolute;
   bottom: 0;
   right: 0;
+  
+  @media screen and (max-width: 400px) {
+    position: relative;
+    display: block;
+    margin-top: 5px;
+  }
 `;
 
 export const pageQuery = graphql`
