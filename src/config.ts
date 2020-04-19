@@ -2,6 +2,7 @@ import {BlogConfigType, StyleConfigType} from "./types/ConfigTypes";
 
 const BlogConfig: BlogConfigType = {
     name: '코딩하는 곰의 공부일지',
+    github: 'https://github.com/maxswjeon',
 }
 
 const StyleConfig: StyleConfigType = {
@@ -37,6 +38,9 @@ const StyleConfig: StyleConfigType = {
         shadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'
     },
 
+    footer: {
+        text_color: '#CCC',
+    },
 };
 
 export {

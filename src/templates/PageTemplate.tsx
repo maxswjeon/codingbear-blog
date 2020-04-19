@@ -11,6 +11,7 @@ import {BlogConfig, StyleConfig} from "../config";
 import PageHeader from "../components/PageHeader";
 import styled, {createGlobalStyle} from "styled-components";
 import {dom} from "@fortawesome/fontawesome-svg-core";
+import PageFooter from "../components/PageFooter";
 
 interface PageTemplateProps {
     title?: string,
@@ -41,6 +42,7 @@ export default function PageTemplate(props: PageTemplateProps) {
                     {props.content}
                 </Container>
             </PageContent>
+            <PageFooter/>
         </div>
     );
 }
@@ -54,6 +56,7 @@ export const PageContent = styled.div`
   overflow: auto;
   padding-bottom: 50px;
   margin-top: -${StyleConfig.category.height}px;
+  flex: 1;
 `;
 
 export const Container = styled.div`

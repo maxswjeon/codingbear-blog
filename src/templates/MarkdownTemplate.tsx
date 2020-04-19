@@ -140,6 +140,7 @@ class MarkdownTemplate extends React.Component<MarkdownTemplateProps, MarkdownTe
                                  dangerouslySetInnerHTML={{__html: html!}}/>
                     </Container>
                 </PageContent>
+                <PageFooter/>
             </div>
         );
     }

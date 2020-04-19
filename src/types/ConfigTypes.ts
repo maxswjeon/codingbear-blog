@@ -32,14 +32,19 @@ interface ContentStyleConfig {
     shadow: string,
 }
 
+interface FooterStyleConfig {
+    text_color: color,
+}
 
 export interface StyleConfigType {
     header: HeaderStyleConfig,
     navigation: NavigationStyleConfig,
     category: CategoryStyleConfig,
     content: ContentStyleConfig,
+    footer: FooterStyleConfig,
 }
 
 export interface BlogConfigType {
     name: string,
+    github: string,
 }
