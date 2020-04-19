@@ -20,21 +20,27 @@ import {faTag} from "@fortawesome/free-solid-svg-icons";
 import {BlogConfig} from "../../config";
 import PageTemplate from "../PageTemplate";
 import PostList from "../../components/PostList";
-import CategoryNode from "../../types/CategoryNode";
 import TagNode from "../../types/TagNode";
 import MarkdownNode from "../../types/MarkdownNode";
 
-interface QueryData {
-    data: {
-        category: CategoryNode
-        tag: TagNode
-        allMarkdownRemark: {
-            nodes: MarkdownNode[]
-        }
+interface TagTemplatePageContext {
+    tag: string,
+    category: string,
+}
+
+interface TagTemplatePageQuery {
+    tag: TagNode
+    allMarkdownRemark: {
+        nodes: MarkdownNode[]
     }
 }
 
-function TagTemplate({data}: QueryData) {
+interface TagTemplateProps {
+    data: TagTemplatePageQuery,
+    pageContext: TagTemplatePageContext,
+}
+
+function TagTemplate({data}: TagTemplateProps) {
     const markdown = data.allMarkdownRemark.nodes;
     const {title, description} = data.tag;
 
@@ -49,11 +55,7 @@ function TagTemplate({data}: QueryData) {
 }
 
 export const pageQuery = graphql`
-    query GetPostsWithTag($tag: String!, $category: String!) {
-    category(category: {eq: $category}) {
-        category
-        title
-    }
+query GetPostsWithTag($tag: String!, $category: String!) {
     tag(title: {eq: $tag}, category: {eq: $category}) {
         title
         description
@@ -76,16 +78,15 @@ export const pageQuery = graphql`
 }
 `;
 
-export default function (props: QueryData) {
-    const {data} = props;
+export default function ({data, pageContext}: TagTemplateProps) {
     const {title} = data.tag;
-    const {category} = data.category;
+    const category = pageContext.category;
 
     return (
         <PageTemplate
             title={'Tag : ' + title! + ' - ' + BlogConfig.name}
-            category={'/' + category! + '/tags/' + title!}
-            content={<TagTemplate data={data}/>}
+            category={'/' + category + '/tags/' + title!}
+            content={<TagTemplate data={data} pageContext={pageContext}/>}
             icon={faTag}
         />
     )

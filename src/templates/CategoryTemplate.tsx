@@ -29,19 +29,26 @@ import MarkdownNode from "../types/MarkdownNode";
 import CategoryNode from "../types/CategoryNode";
 import ProjectNode from "../types/ProjectNode";
 
-interface QueryData {
-    data: {
-        category: CategoryNode
-        allMarkdownRemark: {
-            nodes: MarkdownNode[]
-        }
-        allProject: {
-            nodes: ProjectNode[]
-        }
+interface CategoryTemplatePageContext {
+    category: string,
+}
+
+interface CategoryTemplatePageQuery {
+    category: CategoryNode
+    allMarkdownRemark: {
+        nodes: MarkdownNode[]
+    }
+    allProject: {
+        nodes: ProjectNode[]
     }
 }
 
-function CategoryTemplate({data}: QueryData) {
+interface CategoryTemplateProps {
+    readonly data: CategoryTemplatePageQuery,
+    readonly pageContext: CategoryTemplatePageContext,
+}
+
+function CategoryTemplate({data}: CategoryTemplateProps) {
     const markdown = data.allMarkdownRemark.nodes;
     const projects = data.allProject.nodes;
     const {title, description, category, project} = data.category;
@@ -149,14 +156,14 @@ export const pageQuery = graphql`
     }
 `;
 
-export default function ({data}: QueryData) {
+export default function ({data, pageContext}: CategoryTemplateProps) {
     const {title, category} = data.category;
 
     return (
         <PageTemplate
             title={title! + ' - ' + BlogConfig.name}
             category={'/' + category!}
-            content={<CategoryTemplate data={data}/>}
+            content={<CategoryTemplate data={data} pageContext={pageContext}/>}
         />
     )
 }

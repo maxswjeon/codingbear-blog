@@ -14,21 +14,27 @@ import {graphql} from "gatsby";
 import {BlogConfig} from "../../config";
 import PageTemplate from "../PageTemplate";
 import PostList from "../../components/PostList";
-import CategoryNode from "../../types/CategoryNode";
 import ProjectNode from "../../types/ProjectNode";
 import MarkdownNode from "../../types/MarkdownNode";
 
-interface QueryData {
-    data: {
-        category: CategoryNode
-        project: ProjectNode
-        allMarkdownRemark: {
-            nodes: MarkdownNode[]
-        }
+interface ProjectTemplatePageContext {
+    project: string,
+    type: string,
+}
+
+interface ProjectTemplatePageQuery {
+    project: ProjectNode
+    allMarkdownRemark: {
+        nodes: MarkdownNode[]
     }
 }
 
-function ProjectTemplate({data}: QueryData) {
+interface ProjectTemplateProps {
+    data: ProjectTemplatePageQuery,
+    pageContext: ProjectTemplatePageContext,
+}
+
+function ProjectTemplate({data}: ProjectTemplateProps) {
     const {title, description} = data.project;
     const markdown = data.allMarkdownRemark.nodes;
 
@@ -44,11 +50,6 @@ function ProjectTemplate({data}: QueryData) {
 
 export const pageQuery = graphql`
     query GetAllPostsInProject($project: String!, $type: String!) {
-        category(category: {eq: $type}) {
-            category
-            title
-            project
-        }
         project(fields: {type: {eq: $type}}, title: {eq: $project}) {
             title
             libraries
@@ -79,15 +80,15 @@ export const pageQuery = graphql`
     }
 `;
 
-export default function ({data}: QueryData) {
+export default function ({data, pageContext}: ProjectTemplateProps) {
     const {title} = data.project!;
-    const {category} = data.category!;
+    const category = pageContext.type;
 
     return (
         <PageTemplate
             title={title! + ' - ' + BlogConfig.name}
-            category={'/' + category! + '/projects/' + title}
-            content={<ProjectTemplate data={data}/>}
+            category={'/' + category + '/projects/' + title}
+            content={<ProjectTemplate data={data} pageContext={pageContext}/>}
         />
     )
 }

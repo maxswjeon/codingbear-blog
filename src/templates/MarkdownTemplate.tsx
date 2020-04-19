@@ -25,19 +25,27 @@ import {BlogConfig, StyleConfig} from "../config";
 import MarkdownNode from "../types/MarkdownNode";
 import PageHeader from "../components/PageHeader";
 import {Container, GlobalStyles, Info, PageContent} from "./PageTemplate";
+import PageFooter from "../components/PageFooter";
 
-interface QueryData {
-    data: {
-        markdownRemark: MarkdownNode
-    }
+interface MarkdownTemplatePageContext {
+    slug: string,
+}
+
+interface MarkdownTemplatePageQuery {
+    markdownRemark: MarkdownNode
+}
+
+interface MarkdownTemplateProps {
+    data: MarkdownTemplatePageQuery,
+    pageContext: MarkdownTemplatePageContext,
 }
 
 interface MarkdownTemplateState {
     scroll: number,
 }
 
-class MarkdownTemplate extends React.Component<QueryData, MarkdownTemplateState> {
-    constructor(props: QueryData) {
+class MarkdownTemplate extends React.Component<MarkdownTemplateProps, MarkdownTemplateState> {
+    constructor(props: MarkdownTemplateProps) {
         super(props);
 
         this.onScroll = this.onScroll.bind(this);

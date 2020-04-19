@@ -21,16 +21,23 @@ import ProjectList from "../../components/ProjectList";
 import CategoryNode from "../../types/CategoryNode";
 import ProjectNode from "../../types/ProjectNode";
 
-interface QueryData {
-    data: {
-        category: CategoryNode
-        allProject: {
-            nodes: ProjectNode[]
-        }
+interface ProjectTemplatePageContext {
+    category: string,
+}
+
+interface ProjectTemplatePageQuery {
+    category: CategoryNode
+    allProject: {
+        nodes: ProjectNode[]
     }
 }
 
-function ProjectTemplate({data}: QueryData) {
+interface ProjectTemplateProps {
+    data: ProjectTemplatePageQuery,
+    pageContext: ProjectTemplatePageContext,
+}
+
+function ProjectTemplate({data}: ProjectTemplateProps) {
     const projects = data.allProject.nodes;
 
     return (
@@ -64,15 +71,14 @@ export const pageQuery = graphql`
     }
 `;
 
-export default function (props: QueryData) {
-    const {data} = props;
+export default function ({data, pageContext}: ProjectTemplateProps) {
     const {title, category} = data.category;
 
     return (
         <PageTemplate
             title={title! + ' - ' + BlogConfig.name}
             category={'/' + category! + '/projects'}
-            content={<ProjectTemplate data={data}/>}
+            content={<ProjectTemplate data={data} pageContext={pageContext}/>}
         />
     )
 }

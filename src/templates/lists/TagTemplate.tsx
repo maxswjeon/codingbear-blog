@@ -23,16 +23,23 @@ import CategoryNode from "../../types/CategoryNode";
 import TagNode from "../../types/TagNode";
 import TagList from "../../components/TagList";
 
-interface QueryData {
-    data: {
-        category: CategoryNode
-        allTag: {
-            nodes: TagNode[]
-        }
+interface TagTemplatePageContext {
+    category: string
+}
+
+interface TagTemplatePageQuery {
+    category: CategoryNode
+    allTag: {
+        nodes: TagNode[]
     }
 }
 
-function TagTemplate({data}: QueryData) {
+interface TagTemplateProps {
+    readonly data: TagTemplatePageQuery,
+    readonly pageContext: TagTemplatePageContext,
+}
+
+function TagTemplate({data}: TagTemplateProps) {
     const tags = data.allTag.nodes;
 
     return (
@@ -60,14 +67,14 @@ export const pageQuery = graphql`
 `;
 
 
-export default function ({data}: QueryData) {
+export default function ({data, pageContext}: TagTemplateProps) {
     const {title, category} = data.category;
 
     return (
         <PageTemplate
             title={title! + ' - ' + BlogConfig.name}
             category={'/' + category! + '/tags'}
-            content={<TagTemplate data={data}/>}
+            content={<TagTemplate data={data} pageContext={pageContext}/>}
             icon={faTags}
         />
     )
