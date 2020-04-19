@@ -31,7 +31,7 @@ function MainPage({data}: QueryData) {
 export default function () {
     return (<StaticQuery render={data => <MainPageTemplate data={data}/>} query={graphql`
     query GetAllPosts {
-        allMarkdownRemark {
+        allMarkdownRemark(sort: {fields: [frontmatter___date, frontmatter___title], order: DESC}, filter: {fields: {category: {ne: ""}}} ) {
             nodes {
                 fields {
                     category
