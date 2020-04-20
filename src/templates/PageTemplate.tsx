@@ -36,8 +36,10 @@ export default function PageTemplate(props: PageTemplateProps) {
             <PageContent>
                 <Container>
                     <Info>
-                        <FontAwesomeIcon icon={icon} color={icon_color}/>
-                        <InfoTitle>{createPathElement(decodeURI(props.category))}</InfoTitle>
+                        <InfoTitle>
+                            <InfoIcon icon={icon} color={icon_color}/>
+                            {createPathElement(decodeURI(props.category))}
+                        </InfoTitle>
                     </Info>
                     {props.content}
                 </Container>
@@ -80,12 +82,18 @@ export const Info = styled.div`
   border-bottom: 1px solid ${StyleConfig.category.border_color};
 `;
 
+export const InfoIcon = styled(FontAwesomeIcon)`
+  margin-right: 10px;
+`;
+
 export const InfoTitle = styled.span`
   line-height:  ${StyleConfig.category.height}px;
   height: ${StyleConfig.category.height}px;
   display: inline-block;
   color: ${StyleConfig.category.text_color};
-  margin: 0 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export const CategoryLink = styled.a`

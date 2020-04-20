@@ -24,8 +24,9 @@ import {faChevronLeft, faChevronRight, faFolderOpen} from "@fortawesome/free-sol
 import {BlogConfig, StyleConfig} from "../config";
 import MarkdownNode from "../types/MarkdownNode";
 import PageHeader from "../components/PageHeader";
-import {Container, createPathElement, GlobalStyles, Info, InfoTitle, PageContent} from "./PageTemplate";
+import {Container, createPathElement, GlobalStyles, Info, InfoIcon, InfoTitle, PageContent} from "./PageTemplate";
 import PageFooter from "../components/PageFooter";
+import ReactUtterances from "../components/ReactUtterances";
 
 interface MarkdownTemplatePageContext {
     slug: string,
@@ -172,10 +173,12 @@ class MarkdownTemplate extends React.Component<MarkdownTemplateProps, MarkdownTe
                 {tableOfContents ? stickyTOC : null}
 
                 <PageContent id="content">
-                    <Container className={!previous && !next ? "" : "hasProjectNav"}>
+                    <MarkdownContainer>
                         <Info>
-                            <FontAwesomeIcon icon={faFolderOpen} color='#444'/>
-                            <InfoTitle>{createPathElement(decodeURI(slug))}</InfoTitle>
+                            <InfoTitle>
+                                <InfoIcon icon={faFolderOpen} color='#444'/>
+                                {createPathElement(decodeURI(slug))}
+                            </InfoTitle>
                         </Info>
 
                         <MarkdownStyle/>
@@ -184,11 +187,15 @@ class MarkdownTemplate extends React.Component<MarkdownTemplateProps, MarkdownTe
 
                         {tableOfContents ? contentTOC : null}
 
-                        <div className="markdown-body"
-                             dangerouslySetInnerHTML={{__html: html!}}/>
+                        <MarkdownContent className="markdown-body"
+                                         dangerouslySetInnerHTML={{__html: html!}}/>
 
                         {project ? createPostNavigation() : null}
-                    </Container>
+                        <ReactUtterances
+                            repo={'maxswjeon/codingbear-blog'}
+                            issueMap={'pathname'}
+                            theme={'github-light'}/>
+                    </MarkdownContainer>
                 </PageContent>
                 <PageFooter/>
             </div>
@@ -202,6 +209,14 @@ const headerTop =
     + StyleConfig.navigation.height
     + StyleConfig.category.height
     + 36 // Heading Height, 2em;
+
+const MarkdownContainer = styled(Container)`
+  padding: ${StyleConfig.content.padding}px ${StyleConfig.content.padding}px 0;
+`;
+
+const MarkdownContent = styled.div`
+  padding-bottom: ${StyleConfig.content.padding}px;
+`;
 
 const Title = styled.h1`
   margin: 32px 0 10px 0;
@@ -350,7 +365,22 @@ const MarkdownStyle = createGlobalStyle`
   }
   
   .hasProjectNav {
-    padding: ${StyleConfig.content.padding}px ${StyleConfig.content.padding}px 0;
+  }
+  
+  .react-utterances {
+    border-top: 1px solid ${StyleConfig.category.border_color};
+    margin: 0 -${StyleConfig.content.padding}px;
+    padding: 0 ${StyleConfig.content.padding}px;
+  }
+  
+  .react-utterances > p{
+    text-align: center;
+    padding: 25px 0;
+    color: #CCC;
+  }
+  
+  .utterances {
+    max-width: 100%;
   }
 `;
 
