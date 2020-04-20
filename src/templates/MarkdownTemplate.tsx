@@ -28,6 +28,8 @@ import {Container, createPathElement, GlobalStyles, Info, InfoIcon, InfoTitle, P
 import PageFooter from "../components/PageFooter";
 import ReactUtterances from "../components/ReactUtterances";
 
+import '../styles/MarkdownStyle.css'
+
 interface MarkdownTemplatePageContext {
     slug: string,
     previous: MarkdownNode | null,
@@ -62,12 +64,10 @@ class MarkdownTemplate extends React.Component<MarkdownTemplateProps, MarkdownTe
         const sidebar = document.getElementById("sidebar-toc");
 
         if (!content) {
-            console.error('#content not found');
             return;
         }
 
         if (!sidebar) {
-            console.error('#sidebar-toc not found');
             return;
         }
 
@@ -215,7 +215,7 @@ const MarkdownContainer = styled(Container)`
 `;
 
 const MarkdownContent = styled.div`
-  padding-bottom: ${StyleConfig.content.padding}px;
+  padding: ${StyleConfig.content.padding}px 0;
 `;
 
 const Title = styled.h1`

@@ -985,3 +985,7 @@
     margin: 0 .2em .25em -1.6em;
     vertical-align: middle;
 }
+
+.mermaid {
+    text-align: center;
+}

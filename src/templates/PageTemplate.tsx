@@ -80,6 +80,7 @@ export const Info = styled.div`
   padding: 0 ${StyleConfig.content.padding}px;
   box-sizing: border-box;
   border-bottom: 1px solid ${StyleConfig.category.border_color};
+  overflow: hidden;
 `;
 
 export const InfoIcon = styled(FontAwesomeIcon)`
