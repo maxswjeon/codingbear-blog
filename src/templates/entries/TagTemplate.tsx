@@ -60,7 +60,7 @@ query GetPostsWithTag($tag: String!, $category: String!) {
         title
         description
     }
-    allMarkdownRemark(filter: {fields: {category: {eq: $category}}, frontmatter: {tags: {in: [$tag]}}}) {
+    allMarkdownRemark(sort: {fields: [frontmatter___date, frontmatter___title], order: DESC}, filter: {fields: {category: {eq: $category}}, frontmatter: {tags: {in: [$tag]}}}) {
         nodes {
             frontmatter {
                 title
