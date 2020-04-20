@@ -60,8 +60,6 @@ const CreateMarkdownPage: GatsbyNode['createPages'] = async function (args, opti
         if (index !== markdowns.length - 1) {
             next = markdowns[index + 1];
 
-            console.log(project)
-            console.log(next.fields!.project!);
             if (next.fields!.category !== category || next.fields!.project !== project) {
                 next = null;
             }
