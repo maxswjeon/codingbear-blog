@@ -63,7 +63,7 @@ export const Container = styled.div`
   width: 100%;
   max-width: ${StyleConfig.content.width}px;
   margin: auto;
-  padding: ${StyleConfig.content.padding}px ${StyleConfig.content.padding}px 0;
+  padding: ${StyleConfig.content.padding}px;
   box-sizing: border-box;
   overflow: auto;
   background-color: ${StyleConfig.content.background};

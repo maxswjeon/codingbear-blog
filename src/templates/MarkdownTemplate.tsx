@@ -118,8 +118,12 @@ class MarkdownTemplate extends React.Component<MarkdownTemplateProps, MarkdownTe
         );
 
         const createPostNavigation = () => {
+            if (!previous && !next) {
+                return null;
+            }
+
             const defaultItem = (
-                <PostNavigationItem/>
+                <PostNavigationBlankItem/>
             );
 
             let previousItem = defaultItem;
@@ -168,7 +172,7 @@ class MarkdownTemplate extends React.Component<MarkdownTemplateProps, MarkdownTe
                 {tableOfContents ? stickyTOC : null}
 
                 <PageContent id="content">
-                    <Container>
+                    <Container className={!previous && !next ? "" : "hasProjectNav"}>
                         <Info>
                             <FontAwesomeIcon icon={faFolderOpen} color='#444'/>
                             <InfoTitle>{createPathElement(decodeURI(slug))}</InfoTitle>
@@ -269,6 +273,18 @@ const PostNavigationItem = styled.li`
   }
 `;
 
+const PostNavigationBlankItem = styled.li`
+  width: 50%;
+  height: 50px;
+  float: left;
+  box-sizing: border-box;
+  list-style: none;
+      
+  @media screen and (max-width: ${StyleConfig.header.breakpoint}px) {
+    width: 100%;
+  }
+`;
+
 const PostNavigationLink = styled.a`
   width: 100%;
   height: 50px;
@@ -331,6 +347,10 @@ const MarkdownStyle = createGlobalStyle`
   }
   .center {
     text-align: center;
+  }
+  
+  .hasProjectNav {
+    padding: ${StyleConfig.content.padding}px ${StyleConfig.content.padding}px 0;
   }
 `;
 
