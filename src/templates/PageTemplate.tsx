@@ -37,7 +37,7 @@ export default function PageTemplate(props: PageTemplateProps) {
                 <Container>
                     <Info>
                         <FontAwesomeIcon icon={icon} color={icon_color}/>
-                        <InfoTitle>{props.category}</InfoTitle>
+                        <InfoTitle>{createPathElement(decodeURI(props.category))}</InfoTitle>
                     </Info>
                     {props.content}
                 </Container>
@@ -63,7 +63,7 @@ export const Container = styled.div`
   width: 100%;
   max-width: ${StyleConfig.content.width}px;
   margin: auto;
-  padding: ${StyleConfig.content.padding}px;
+  padding: ${StyleConfig.content.padding}px ${StyleConfig.content.padding}px 0;
   box-sizing: border-box;
   overflow: auto;
   background-color: ${StyleConfig.content.background};
@@ -87,3 +87,32 @@ export const InfoTitle = styled.span`
   color: ${StyleConfig.category.text_color};
   margin: 0 10px;
 `;
+
+export const CategoryLink = styled.a`
+  text-decoration: none;
+  color: ${StyleConfig.category.text_color};
+  
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+export function createPathElement(category: string) {
+    if (category === '/') {
+        return [(<span>/</span>)];
+    }
+
+    let currentDir = '';
+    const PathElement: React.ReactElement[] = [];
+    for (const path of category.split('/').filter(e => e)) {
+        currentDir += '/' + path;
+        PathElement.push((
+            <span key={currentDir + '_separator'}>/</span>
+        ));
+        PathElement.push((
+            <CategoryLink href={currentDir} key={currentDir}>{path}</CategoryLink>
+        ));
+    }
+
+    return PathElement;
+}

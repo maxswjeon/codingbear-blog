@@ -19,16 +19,18 @@ import styled, {createGlobalStyle} from "styled-components";
 import {graphql} from "gatsby";
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faFolderOpen} from "@fortawesome/free-solid-svg-icons";
+import {faChevronLeft, faChevronRight, faFolderOpen} from "@fortawesome/free-solid-svg-icons";
 
 import {BlogConfig, StyleConfig} from "../config";
 import MarkdownNode from "../types/MarkdownNode";
 import PageHeader from "../components/PageHeader";
-import {Container, GlobalStyles, Info, PageContent} from "./PageTemplate";
+import {Container, createPathElement, GlobalStyles, Info, InfoTitle, PageContent} from "./PageTemplate";
 import PageFooter from "../components/PageFooter";
 
 interface MarkdownTemplatePageContext {
     slug: string,
+    previous: MarkdownNode | null,
+    next: MarkdownNode | null,
 }
 
 interface MarkdownTemplatePageQuery {
@@ -89,11 +91,13 @@ class MarkdownTemplate extends React.Component<MarkdownTemplateProps, MarkdownTe
     }
 
     render() {
-        const {data} = this.props;
+        const {data, pageContext} = this.props;
 
         const {html, tableOfContents} = data.markdownRemark;
         const {title, date} = data.markdownRemark.frontmatter!;
-        const {directory} = data.markdownRemark.fields!;
+        const {project} = data.markdownRemark.fields!;
+
+        const {previous, next, slug} = pageContext;
 
         const toc = tableOfContents!
             .replace(/\/#/g, '#')
@@ -113,6 +117,46 @@ class MarkdownTemplate extends React.Component<MarkdownTemplateProps, MarkdownTe
             </TableOfContents>
         );
 
+        const createPostNavigation = () => {
+            const defaultItem = (
+                <PostNavigationItem/>
+            );
+
+            let previousItem = defaultItem;
+            if (previous) {
+                previousItem = (
+                    <PostNavigationItem>
+                        <PostNavigationLink href={previous.fields!.slug!} className="left">
+                            <PostNavigationText>
+                                <PostNavigationIcon icon={faChevronLeft}/>
+                                {previous.frontmatter!.title!}
+                            </PostNavigationText>
+                        </PostNavigationLink>
+                    </PostNavigationItem>
+                )
+            }
+
+            let nextItem = defaultItem;
+            if (next) {
+                nextItem = (
+                    <PostNavigationItem>
+                        <PostNavigationLink href={next.fields!.slug!} className="right">
+                            <PostNavigationText>
+                                {next.frontmatter!.title!}
+                                <PostNavigationIcon icon={faChevronRight}/>
+                            </PostNavigationText>
+                        </PostNavigationLink>
+                    </PostNavigationItem>
+                )
+            }
+            return (
+                <PostNavigation>
+                    {previousItem}
+                    {nextItem}
+                </PostNavigation>
+            );
+        }
+
         return (
             <div>
                 <Helmet>
@@ -127,7 +171,7 @@ class MarkdownTemplate extends React.Component<MarkdownTemplateProps, MarkdownTe
                     <Container>
                         <Info>
                             <FontAwesomeIcon icon={faFolderOpen} color='#444'/>
-                            <CategoryText>{directory}</CategoryText>
+                            <InfoTitle>{createPathElement(decodeURI(slug))}</InfoTitle>
                         </Info>
 
                         <MarkdownStyle/>
@@ -136,8 +180,10 @@ class MarkdownTemplate extends React.Component<MarkdownTemplateProps, MarkdownTe
 
                         {tableOfContents ? contentTOC : null}
 
-                        <Content className="markdown-body"
-                                 dangerouslySetInnerHTML={{__html: html!}}/>
+                        <div className="markdown-body"
+                             dangerouslySetInnerHTML={{__html: html!}}/>
+
+                        {project ? createPostNavigation() : null}
                     </Container>
                 </PageContent>
                 <PageFooter/>
@@ -152,15 +198,6 @@ const headerTop =
     + StyleConfig.navigation.height
     + StyleConfig.category.height
     + 36 // Heading Height, 2em;
-
-const CategoryText = styled.a`
-  text-decoration: none;
-  line-height: 50px;
-  height: 50px;
-  display: inline-block;
-  color: #959da5;
-  margin: 0 10px;
-`;
 
 const Title = styled.h1`
   margin: 32px 0 10px 0;
@@ -202,7 +239,67 @@ const TocHeading = styled.h2`
   margin-bottom: 0;
 `;
 
-const Content = styled.div`
+const PostNavigation = styled.ul`
+  margin: 25px -${StyleConfig.content.padding}px 0 -${StyleConfig.content.padding}px;
+  padding: 0;
+  border-top: 1px solid ${StyleConfig.category.border_color};
+  box-sizing: border-box;
+  
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+  
+`;
+
+const PostNavigationItem = styled.li`
+  width: 50%;
+  height: 50px;
+  float: left;
+  box-sizing: border-box;
+  list-style: none;
+    
+  &:hover {
+    background-color: #DDD;
+  }
+  
+  @media screen and (max-width: ${StyleConfig.header.breakpoint}px) {
+    width: 100%;
+  }
+`;
+
+const PostNavigationLink = styled.a`
+  width: 100%;
+  height: 50px;
+  display: block;
+  text-decoration: none;
+  color: black;
+  line-height: 50px;
+`;
+
+const PostNavigationIcon = styled(FontAwesomeIcon)`
+  width: 25px !important;
+  height: 25px !important;
+  margin: 0 ${StyleConfig.content.padding / 2}px;
+  line-height: 50px;
+  font-size: 25px;
+  vertical-align: text-bottom !important;
+  color: #666;
+`;
+
+const PostNavigationText = styled.p`
+  width: 100%;
+  height: 50px;
+  margin: 0;
+  padding: 0;
+  line-height: 50px;
+  display: inline-block;
+  box-sizing: border-box;
+  color: #666;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const MarkdownStyle = createGlobalStyle`
@@ -225,6 +322,16 @@ const MarkdownStyle = createGlobalStyle`
     top: 25px;
     left: calc((100vw - ${StyleConfig.content.width}px)/ 2 - 250px);
   }
+  
+  .left {
+    text-align: left;
+  }
+  .right {
+    text-align: right;
+  }
+  .center {
+    text-align: center;
+  }
 `;
 
 export const pageQuery = graphql`
@@ -239,6 +346,7 @@ export const pageQuery = graphql`
                 slug
                 category
                 directory
+                project
             }
             headings {
                 depth

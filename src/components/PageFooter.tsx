@@ -26,6 +26,7 @@ const FooterContent = styled.div`
   max-width: ${StyleConfig.content.width}px;
   margin: auto;
   padding: 25px;
+  box-sizing: border-box;
 `;
 
 const FooterLink = styled.a`
