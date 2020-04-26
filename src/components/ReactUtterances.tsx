@@ -44,10 +44,7 @@ class ReactUtterances extends React.Component<ReactUtterancesProps, ReactUtteran
         scriptElement.setAttribute('repo', repo);
         scriptElement.setAttribute('crossorigin', 'annonymous');
         scriptElement.setAttribute('theme', theme);
-        scriptElement.onload = (e) => {
-            console.log(e);
-            this.setState({pending: false});
-        }
+        scriptElement.onload = () => this.setState({pending: false});
 
         if (label) {
             scriptElement.setAttribute('label', label);

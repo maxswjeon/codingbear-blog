@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 
 import PostItem from "./PostItem";
-import MarkdownNode from "../types/MarkdownNode";
+import MarkdownNode from "../../types/MarkdownNode";
 
 interface PostListProps {
     data: MarkdownNode[]

@@ -29,6 +29,7 @@ module.exports = {
                 ],
             },
         },
+        `gatsby-plugin-sass`,
         `gatsby-plugin-styled-components`,
         {
             resolve: `gatsby-source-filesystem`,
@@ -47,40 +48,52 @@ module.exports = {
                             enableCustomId: true,
                         }
                     },
+                    {
+                        resolve: `gatsby-remark-mermaid`,
+                        options: {
+                            viewport: {
+                                width: 1024,
+                                height: 400,
+                            }
+                        }
+                    },
+                    `gatsby-remark-embed-video`,
+                    `gatsby-remark-prismjs`,
                     `gatsby-remark-abbr`,
                     `gatsby-remark-sub-sup`,
-                    `gatsby-remark-twemoji-shortcut`,
-                    `gatsby-remark-graph`,
-                    `gatsby-remark-table-of-contents`,
+                    {
+                        resolve: `gatsby-remark-footnotes`,
+                        options: {
+                            footnoteBackRefPreviousElementDisplay: "inline",
+                            footnoteBackRefDisplay: "inline",
+                            footnoteBackRefInnerText: "^",
+                            footnoteBackRefAnchorStyle: `text-decoration: none;`,
+                            footnoteBackRefInnerTextStartPosition: "front",
+                        }
+                    },
                     {
                         resolve: `gatsby-remark-attr`,
                         options: {
                             allowDangerousDOMEventHandlers: true
                         },
                     },
-                    {
-                        resolve: `gatsby-remark-prismjs`,
-                        options: {
-                            showLineNumbers: true,
-                        }
-                    },
-                    `gatsby-remark-embed-video`,
-                    `gatsby-remark-normalize-paths`,
-                    {
-                        resolve: `gatsby-remark-relative-images`,
-                        options: {
-                            maxWidth: 500,
-                        }
-                    },
-                    {
-                        resolve: `gatsby-remark-external-links`,
-                        options: {
-                            target: '_self',
-                            rel: 'nofollow',
-                        }
-                    },
-                    `gatsby-remark-copy-linked-files`,
-                    `gatsby-remark-mathjax`,
+                    `gatsby-remark-mathjax-ssr`,
+                    // `gatsby-remark-twemoji-shortcut`,
+                    // `gatsby-remark-normalize-paths`,
+                    // {
+                    //     resolve: `gatsby-remark-relative-images`,
+                    //     options: {
+                    //         maxWidth: 500,
+                    //     }
+                    // },
+                    // {
+                    //     resolve: `gatsby-remark-external-links`,
+                    //     options: {
+                    //         target: '_self',
+                    //         rel: 'nofollow',
+                    //     }
+                    // },
+                    // `gatsby-remark-copy-linked-files`,
                 ],
             }
         }

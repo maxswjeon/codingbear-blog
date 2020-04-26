@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
-import {StyleConfig} from "../config";
+import {StyleConfig} from "../../config";
 
 interface NavEntryProps {
     Href?: string;

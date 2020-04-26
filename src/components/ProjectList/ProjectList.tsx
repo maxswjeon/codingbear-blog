@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import ProjectItem from "./ProjectItem";
-import ProjectNode from "../types/ProjectNode";
+import ProjectNode from "../../types/ProjectNode";
 
 interface ProjectListProps {
     data: ProjectNode[]

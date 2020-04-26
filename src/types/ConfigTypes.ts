@@ -34,6 +34,21 @@ interface ContentStyleConfig {
 
 interface FooterStyleConfig {
     text_color: color,
+    height: number,
+}
+
+interface TableOfContentsConfig {
+    width: number,
+    top: number,
+    padding: number,
+}
+
+interface MarkdownConfig {
+
+}
+
+interface CodeHighlightConfig {
+
 }
 
 export interface StyleConfigType {
@@ -42,6 +57,9 @@ export interface StyleConfigType {
     category: CategoryStyleConfig,
     content: ContentStyleConfig,
     footer: FooterStyleConfig,
+    tableofcontent: TableOfContentsConfig,
+    markdown: MarkdownConfig,
+    code: CodeHighlightConfig,
 }
 
 export interface BlogConfigType {

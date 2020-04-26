@@ -2,7 +2,7 @@ import React from "react";
 
 import styled from "styled-components";
 
-import TagNode from "../types/TagNode";
+import TagNode from "../../types/TagNode";
 import TagItem from "./TagItem";
 
 interface TagListProps {

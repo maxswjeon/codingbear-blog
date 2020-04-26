@@ -3,32 +3,37 @@
  *
  * url : /{slug}
  * contents:
- *     - Styled Result of Markdown File
+ *     - Styled Result of markdown File
  * context:
- *     - Slug to Markdown File
+ *     - Slug to markdown File
  * query:
- *     - Markdown Node with matching slug
+ *     - markdown Node with matching slug
  */
 
-import React from "react";
+import React, {ReactElement} from "react";
 import {Helmet} from "react-helmet";
 import 'normalize.css';
 
-import styled, {createGlobalStyle} from "styled-components";
+import styled from "styled-components";
 
 import {graphql} from "gatsby";
-
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faChevronLeft, faChevronRight, faFolderOpen} from "@fortawesome/free-solid-svg-icons";
+import {faFolderOpen} from "@fortawesome/free-solid-svg-icons";
 
 import {BlogConfig, StyleConfig} from "../config";
 import MarkdownNode from "../types/MarkdownNode";
 import PageHeader from "../components/PageHeader";
 import {Container, createPathElement, GlobalStyles, Info, InfoIcon, InfoTitle, PageContent} from "./PageTemplate";
 import PageFooter from "../components/PageFooter";
+import PostNavigation from "../components/PostNavigation";
 import ReactUtterances from "../components/ReactUtterances";
 
-import '../styles/MarkdownStyle.css'
+import 'd2coding/d2coding-subset.css';
+import 'gatsby-remark-mathjax-ssr/mathjax.css';
+import '../styles/Markdown/markdown.css';
+import CodeHighlightStyle from "../styles/markdown/code";
+import TOCStyle from "../styles/markdown/toc";
+import UtterancesStyle from "../styles/markdown/utterances";
+import PageNavigationStyle from "../styles/markdown/navigation";
 
 interface MarkdownTemplatePageContext {
     slug: string,
@@ -50,6 +55,19 @@ interface MarkdownTemplateState {
 }
 
 class MarkdownTemplate extends React.Component<MarkdownTemplateProps, MarkdownTemplateState> {
+
+    private title: string;
+    private date: string;
+    private slug: string;
+    private html: string;
+    private project: string | undefined | null;
+
+    private tableOfContents: string | null;
+    private isProject: boolean;
+
+    private previous: MarkdownNode | null;
+    private next: MarkdownNode | null;
+
     constructor(props: MarkdownTemplateProps) {
         super(props);
 
@@ -57,6 +75,26 @@ class MarkdownTemplate extends React.Component<MarkdownTemplateProps, MarkdownTe
         this.state = {
             scroll: 0
         }
+
+        const {data, pageContext} = this.props;
+
+        const {html, tableOfContents} = data.markdownRemark;
+        const {title, date} = data.markdownRemark.frontmatter!;
+        const {project} = data.markdownRemark.fields!;
+
+        const {previous, next, slug} = pageContext;
+
+        this.html = html!;
+        this.tableOfContents = this.createTableOfContent(tableOfContents);
+        this.title = title!;
+        this.date = date!;
+        this.project = project;
+        this.isProject = !!project;
+
+        this.previous = previous;
+        this.next = next;
+        this.slug = decodeURI(slug);
+
     }
 
     onScroll() {
@@ -91,83 +129,64 @@ class MarkdownTemplate extends React.Component<MarkdownTemplateProps, MarkdownTe
         window.removeEventListener('scroll', this.onScroll);
     }
 
-    render() {
-        const {data, pageContext} = this.props;
+    createTableOfContent(tableOfContents: string | undefined): string | null {
+        if (!tableOfContents) {
+            return null;
+        }
 
-        const {html, tableOfContents} = data.markdownRemark;
-        const {title, date} = data.markdownRemark.frontmatter!;
-        const {project} = data.markdownRemark.fields!;
-
-        const {previous, next, slug} = pageContext;
-
-        const toc = tableOfContents!
+        return tableOfContents
             .replace(/\/#/g, '#')
-            .replace(/<ul>/g, '<ul class="toc-list">');
+            .replace(/<ul>/g, '<ul class="toc-list">')
+            .replace(/<p>/g, '')
+            .replace(/<\/p>/g, '');
+    }
+
+    createPostNavigation(): ReactElement | null {
+        const {isProject, previous, next} = this;
+
+        if (!isProject) {
+            return null;
+        }
+
+        if (!previous && !next) {
+            return null;
+        }
+
+        return (
+            <PostNavigation previous={previous} next={next}/>
+        );
+    }
+
+    render() {
+        const {title, date, slug, html, tableOfContents} = this;
 
         const stickyTOC = (
             <StickyTableOfContents id="sidebar-toc">
                 <TocHeading id="toc-heading">Table of Contents</TocHeading>
-                <div dangerouslySetInnerHTML={{__html: toc}}/>
+                <div dangerouslySetInnerHTML={{__html: tableOfContents!}}/>
             </StickyTableOfContents>
         );
 
         const contentTOC = (
             <TableOfContents>
                 <TocHeading id="toc-heading">Table of Contents</TocHeading>
-                <div dangerouslySetInnerHTML={{__html: toc}}/>
+                <div dangerouslySetInnerHTML={{__html: tableOfContents!}}/>
             </TableOfContents>
         );
-
-        const createPostNavigation = () => {
-            if (!previous && !next) {
-                return null;
-            }
-
-            const defaultItem = (
-                <PostNavigationBlankItem/>
-            );
-
-            let previousItem = defaultItem;
-            if (previous) {
-                previousItem = (
-                    <PostNavigationItem>
-                        <PostNavigationLink href={previous.fields!.slug!} className="left">
-                            <PostNavigationText>
-                                <PostNavigationIcon icon={faChevronLeft}/>
-                                {previous.frontmatter!.title!}
-                            </PostNavigationText>
-                        </PostNavigationLink>
-                    </PostNavigationItem>
-                )
-            }
-
-            let nextItem = defaultItem;
-            if (next) {
-                nextItem = (
-                    <PostNavigationItem>
-                        <PostNavigationLink href={next.fields!.slug!} className="right">
-                            <PostNavigationText>
-                                {next.frontmatter!.title!}
-                                <PostNavigationIcon icon={faChevronRight}/>
-                            </PostNavigationText>
-                        </PostNavigationLink>
-                    </PostNavigationItem>
-                )
-            }
-            return (
-                <PostNavigation>
-                    {previousItem}
-                    {nextItem}
-                </PostNavigation>
-            );
-        }
 
         return (
             <div>
                 <Helmet>
-                    <title>{title! + ' - ' + BlogConfig.name}</title>
+                    <title>{title + ' - ' + BlogConfig.name}</title>
                 </Helmet>
+
                 <GlobalStyles/>
+
+                <TOCStyle/>
+                <UtterancesStyle/>
+                <PageNavigationStyle/>
+                <CodeHighlightStyle/>
+
                 <PageHeader/>
 
                 {tableOfContents ? stickyTOC : null}
@@ -177,20 +196,19 @@ class MarkdownTemplate extends React.Component<MarkdownTemplateProps, MarkdownTe
                         <Info>
                             <InfoTitle>
                                 <InfoIcon icon={faFolderOpen} color='#444'/>
-                                {createPathElement(decodeURI(slug))}
+                                {createPathElement(slug)}
                             </InfoTitle>
                         </Info>
 
-                        <MarkdownStyle/>
                         <Title>{title}</Title>
                         <UploadDate>{date}</UploadDate>
 
                         {tableOfContents ? contentTOC : null}
 
                         <MarkdownContent className="markdown-body"
-                                         dangerouslySetInnerHTML={{__html: html!}}/>
+                                         dangerouslySetInnerHTML={{__html: html}}/>
 
-                        {project ? createPostNavigation() : null}
+                        {this.createPostNavigation()}
                         <ReactUtterances
                             repo={'maxswjeon/codingbear-blog'}
                             issueMap={'pathname'}
@@ -236,7 +254,7 @@ const UploadDate = styled.h2`
 const TableOfContents = styled.div`
   display: none;
   
-  @media screen and (max-width: ${StyleConfig.content.width + 525}px) {
+  @media screen and (max-width: ${StyleConfig.content.width + 2 * (StyleConfig.tableofcontent.width + StyleConfig.tableofcontent.padding)}px) {
     display: block;
   }
 `;
@@ -244,12 +262,19 @@ const TableOfContents = styled.div`
 const StickyTableOfContents = styled.div`
   position: absolute;
   width: 250px;
-  top: ${headerTop + 25}px;
-  left: calc((100vw - ${StyleConfig.content.width}px)/ 2 - 250px);
+  top: ${headerTop + StyleConfig.tableofcontent.top}px;
+    left: calc((100vw 
+            - ${StyleConfig.content.width}px)/ 2 
+            - ${StyleConfig.tableofcontent.width + StyleConfig.tableofcontent.padding}px);
   overflow-x: hidden;
   
-  @media screen and (max-width: ${StyleConfig.content.width + 525}px) {
+  @media screen and (max-width: ${StyleConfig.content.width + 2 * (StyleConfig.tableofcontent.width + StyleConfig.tableofcontent.padding)}px) {
     display: none;
+  }
+  
+  & > div > ul {
+    height: calc(100vh - ${headerTop + StyleConfig.tableofcontent.top + 91}px);
+    overflow: auto;
   }
 `;
 
@@ -258,131 +283,6 @@ const TocHeading = styled.h2`
   margin-bottom: 0;
 `;
 
-const PostNavigation = styled.ul`
-  margin: 25px -${StyleConfig.content.padding}px 0 -${StyleConfig.content.padding}px;
-  padding: 0;
-  border-top: 1px solid ${StyleConfig.category.border_color};
-  box-sizing: border-box;
-  
-  &::after {
-    content: '';
-    display: block;
-    clear: both;
-  }
-  
-`;
-
-const PostNavigationItem = styled.li`
-  width: 50%;
-  height: 50px;
-  float: left;
-  box-sizing: border-box;
-  list-style: none;
-    
-  &:hover {
-    background-color: #DDD;
-  }
-  
-  @media screen and (max-width: ${StyleConfig.header.breakpoint}px) {
-    width: 100%;
-  }
-`;
-
-const PostNavigationBlankItem = styled.li`
-  width: 50%;
-  height: 50px;
-  float: left;
-  box-sizing: border-box;
-  list-style: none;
-      
-  @media screen and (max-width: ${StyleConfig.header.breakpoint}px) {
-    width: 100%;
-  }
-`;
-
-const PostNavigationLink = styled.a`
-  width: 100%;
-  height: 50px;
-  display: block;
-  text-decoration: none;
-  color: black;
-  line-height: 50px;
-`;
-
-const PostNavigationIcon = styled(FontAwesomeIcon)`
-  width: 25px !important;
-  height: 25px !important;
-  margin: 0 ${StyleConfig.content.padding / 2}px;
-  line-height: 50px;
-  font-size: 25px;
-  vertical-align: text-bottom !important;
-  color: #666;
-`;
-
-const PostNavigationText = styled.p`
-  width: 100%;
-  height: 50px;
-  margin: 0;
-  padding: 0;
-  line-height: 50px;
-  display: inline-block;
-  box-sizing: border-box;
-  color: #666;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
-const MarkdownStyle = createGlobalStyle`
-  .toc {
-    display: none;
-  }
-  
-  .toc-list {
-    padding-inline-start: 20px;
-  }
-  .toc-list > li {
-    padding: 5px 0;
-  }
-  .toc-list > li > p {
-    margin: 0;
-  }
-  
-  .sticky {
-    position: fixed;
-    top: 25px;
-    left: calc((100vw - ${StyleConfig.content.width}px)/ 2 - 250px);
-  }
-  
-  .left {
-    text-align: left;
-  }
-  .right {
-    text-align: right;
-  }
-  .center {
-    text-align: center;
-  }
-  
-  .hasProjectNav {
-  }
-  
-  .react-utterances {
-    border-top: 1px solid ${StyleConfig.category.border_color};
-    margin: 0 -${StyleConfig.content.padding}px;
-    padding: 0 ${StyleConfig.content.padding}px;
-  }
-  
-  .react-utterances > p{
-    text-align: center;
-    padding: 25px 0;
-    color: #CCC;
-  }
-  
-  .utterances {
-    max-width: 100%;
-  }
-`;
 
 export const pageQuery = graphql`
     query ($slug: String!) {

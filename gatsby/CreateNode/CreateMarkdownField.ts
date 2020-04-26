@@ -58,7 +58,7 @@ const CreateMarkdownField: GatsbyNode['onCreateNode'] = async function (args) {
         node,
         name: 'directory',
         value: '/' + pathSlice.join('/')
-    })
+    });
 }
 
 export default CreateMarkdownField;

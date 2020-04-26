@@ -8,14 +8,14 @@ export interface MarkdownHeadings {
 export interface DefaultMarkdownNode extends Node {
     excerpt?: string,
 
-    // TODO: Type Markdown AST Tree
+    // TODO: Type markdown AST Tree
     excerptAst?: any,
     fileAbsolutePath?: string,
     headings?: MarkdownHeadings[]
     html?: string,
 
-    // TODO: Type Markdown AST Tree
-    htmlAST?: any,
+    // TODO: Type markdown AST Tree
+    htmlAst?: any,
 
     rawMarkdownBody?: string,
     tableOfContents?: string,

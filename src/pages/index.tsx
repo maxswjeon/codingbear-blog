@@ -7,7 +7,7 @@ import {faFolderOpen} from "@fortawesome/free-solid-svg-icons";
 import {BlogConfig} from "../config";
 import MarkdownNode from "../types/MarkdownNode";
 import PageTemplate from "../templates/PageTemplate";
-import PostList from "../components/PostList";
+import PostList from "../components/PostList/PostList";
 
 interface QueryData {
     data: {

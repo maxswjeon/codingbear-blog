@@ -6,7 +6,7 @@ import PageNavEntry from "./PageNavEntry";
 import HiddenNavEntry from "./HiddenNavEntry";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBars} from "@fortawesome/free-solid-svg-icons";
-import {StyleConfig} from "../config";
+import {StyleConfig} from "../../config";
 
 interface PageNavigationProps {
     location?: WindowLocation;

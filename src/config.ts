@@ -40,7 +40,18 @@ const StyleConfig: StyleConfigType = {
 
     footer: {
         text_color: '#CCC',
+        height: 125,
     },
+
+    tableofcontent: {
+        width: 250,
+        padding: 25,
+        top: 25,
+    },
+
+    markdown: {},
+
+    code: {},
 };
 
 export {
