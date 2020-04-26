@@ -65,4 +65,5 @@ export interface StyleConfigType {
 export interface BlogConfigType {
     name: string,
     github: string,
+    repo: string,
 }

@@ -3,6 +3,7 @@ import {BlogConfigType, StyleConfigType} from "./types/ConfigTypes";
 const BlogConfig: BlogConfigType = {
     name: '코딩하는 곰의 공부일지',
     github: 'https://github.com/maxswjeon',
+    repo: 'https://github.com/maxswjeon/codingbear-blog',
 }
 
 const StyleConfig: StyleConfigType = {

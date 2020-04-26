@@ -7,7 +7,8 @@ function PageFooter(): React.ReactElement {
         <Footer>
             <FooterContent>
                 <FooterLink href="/About">About</FooterLink>&#32;
-                <FooterLink href={BlogConfig.github}>Github</FooterLink>
+                <FooterLink href={BlogConfig.github}>Github</FooterLink>&#32;
+                <FooterLink href={BlogConfig.repo}>Source</FooterLink>
                 <br/>
                 <FooterText>© 2020 Sangwan Jeon</FooterText>
                 <br/>
