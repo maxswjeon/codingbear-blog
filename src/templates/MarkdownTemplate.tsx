@@ -29,7 +29,7 @@ import ReactUtterances from "../components/ReactUtterances";
 
 import 'd2coding/d2coding-subset.css';
 import 'gatsby-remark-mathjax-ssr/mathjax.css';
-import '../styles/Markdown/markdown.css';
+import '../styles/markdown/markdown.css';
 import CodeHighlightStyle from "../styles/markdown/code";
 import TOCStyle from "../styles/markdown/toc";
 import UtterancesStyle from "../styles/markdown/utterances";
