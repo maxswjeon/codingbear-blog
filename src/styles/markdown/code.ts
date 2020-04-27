@@ -120,8 +120,7 @@ const CodeHighlightStyle = createGlobalStyle`
     box-shadow: inset 5px 0 0 #f7d87c;
   }
   
-/*
-
+  /* Line Numbers */
   pre[class*="language-"].line-numbers {
     position: relative;
     padding-left: 3em;
@@ -153,7 +152,7 @@ const CodeHighlightStyle = createGlobalStyle`
     pointer-events: none;
     display: block;
     counter-increment: linenumber;
-    line-height: 1.4;
+    line-height: 1.5;
   }
 
   .line-numbers-rows > span:before {
@@ -163,7 +162,7 @@ const CodeHighlightStyle = createGlobalStyle`
     padding-right: 0.8em;
     text-align: right;
   }  
-  */
+  
 `;
 
 export default CodeHighlightStyle;
